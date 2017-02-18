@@ -91,6 +91,8 @@ elsif ( $cgi->url_param('lang') ) {
 #$maintemplate = HTML::Template->new(filename => "$installfolder/templates/plugins/$psubfolder/multi/main.html");
 $maintemplate = HTML::Template->new(
 	filename => "$installfolder/templates/plugins/$psubfolder/multi/main.html",
+	global_vars => 1,
+	loop_context_vars => 1,
 	die_on_bad_params => 0,
 	associate => $cgi,
 );
