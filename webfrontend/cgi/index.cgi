@@ -26,6 +26,7 @@ use Cwd 'abs_path';
 use HTML::Template;
 use warnings;
 use strict;
+no strict "refs"; # we need it for template system and for contructs like ${"skalar".$i} in loops
 
 ##########################################################################
 # Variables
@@ -42,6 +43,7 @@ my  $psubfolder;
 my  $pname;
 my  $languagefileplugin;
 my  %TPhrases;
+my  $maintemplate;
 
 ##########################################################################
 # Read Settings
@@ -133,6 +135,72 @@ while (my ($name, $value) = each %TPhrases){
 	#$headertemplate->param("T::$name" => $value);
 	#$footertemplate->param("T::$name" => $value);
 }
+
+##########################################################################
+# Create some variables for the Template
+##########################################################################
+
+###
+# As an example: we create a select list for a form in two different ways
+###
+
+# First create a select list for a from - data is taken from the Plugin 
+# Config file. We are using the HTML::Template Loop function. You should
+# be familiar with Hashes and Arrays in Perl.
+#
+# Please see https://metacpan.org/pod/HTML::Template
+# Please see http://www.perlmonks.org/?node_id=65642
+#
+# This is the prefered way, because code and style is seperated. But
+# it is a little bit complicated. If you could not understand this,
+# please see next example.
+
+# Create an array with the sections we would like to read. These
+# Sections exist in the plugin config file.
+# See https://wiki.selfhtml.org/wiki/Perl/Listen_bzw._Arrays
+@sections = ("SECTION1","SECTION2","SECTION3");
+
+# Now we put the options from the 3 sections into a (new) hash (we check if
+# they exist at first). This newly created hash will be referenced in an array.
+# Perl only allows referenced hashes in arrays, so we are not allowed to
+# overwrite the single hashes!
+my $i = 0;
+my @array;
+foreach (@sections) {
+        if ( $plugin_cfg->param("$_.NAME") ) {
+                %{"hash".$i} = ( # Create a new hash each time, e.g. %hash1, %hash2 etc.
+                OPTION_NAME	=>	$plugin_cfg->param("$_.NAME"),
+                ID		=>	$plugin_cfg->param("$_.ID"),
+                );
+                push (@array, \%{"hash".$i}); 	# Attach a reference to the newly created
+						# hash to the array
+                $i++;
+	}	
+}
+# Let the Loop with name "SECTIONS" be available in the template
+$maintemplate->param( SECTIONS => \@array );
+
+# This was complicated? Yes, it is because you have to understand hashes and arrays in Perl.
+# We can do the very same if we mix code and style here. It's not as "clean", but it is
+# easier to understand.
+
+# Again we read the options from the 3 sections from our config file. But we now will create
+# the select list for the form right here - not as before in the template.
+my $selectlist;
+foreach (@sections) {
+        if ( $plugin_cfg->param("$_.NAME") ) {
+		# This appends a new option line to $selectlist
+		$selectlist .= "<option value='".$plugin_cfg->param("$_.ID")."'>".$plugin_cfg->param("$_.NAME")."</option>\n";
+	}
+}
+# Let the Var $selectlist with the name SELECTLIST be available in the template
+$maintemplate->param( SELECTLIST => $selectlist );
+
+###
+# As an example: we create some vars for the template
+###
+$maintemplate->param( PLUGINNAME => $pname );
+$maintemplate->param( ANOTHERNAME => "This is another Name" );
 
 
 ##########################################################################
