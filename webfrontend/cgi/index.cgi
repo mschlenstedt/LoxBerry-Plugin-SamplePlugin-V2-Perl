@@ -57,7 +57,10 @@ $psubfolder = abs_path($0);
 $psubfolder =~ s/(.*)\/(.*)\/(.*)$/$2/g;
 
 # Start with HTML header
-print $cgi->header('text/html'); 
+print $cgi->header(
+        type    =>      'text/html',
+        charset =>      'utf-8',
+);
 
 # Read general config
 $cfg	 	= new Config::Simple("$home/config/system/general.cfg") or die $cfg->error();
