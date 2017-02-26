@@ -16,13 +16,16 @@
 ##########################################################################
 # Modules
 ##########################################################################
+use FindBin;
+use lib "$FindBin::Bin/./perllib";
+use LoxBerry::System;
+use LoxBerry::Web;
 
 use CGI::Carp qw(fatalsToBrowser);
 use CGI qw/:standard/;
 use Config::Simple;
-use File::HomeDir;
-use String::Escape qw( unquotemeta );
-use Cwd 'abs_path';
+# String::Escape needs to be installed!
+# use String::Escape qw( unquotemeta );
 use HTML::Template;
 use warnings;
 use strict;
@@ -32,14 +35,10 @@ no strict "refs"; # we need it for template system and for contructs like ${"ska
 # Variables
 ##########################################################################
 my  $cgi = new CGI;
-my  $cfg;
 my  $plugin_cfg;
 my  $lang;
-my  $installfolder;
 my  $languagefile;
 my  $version;
-my  $home = File::HomeDir->my_home;
-my  $psubfolder;
 my  $pname;
 my  $languagefileplugin;
 my  %TPhrases;
@@ -50,11 +49,17 @@ my  $maintemplate;
 ##########################################################################
 
 # Version of this script
-$version = "0.1";
+$version = "0.02";
 
-# Figure out in which subfolder we are installed
-$psubfolder = abs_path($0);
-$psubfolder =~ s/(.*)\/(.*)\/(.*)$/$2/g;
+print STDERR "Global variables from LoxBerry::System\n";
+print STDERR "Homedir:     $lbhomedir\n";
+print STDERR "Plugindir:   $lbplugindir\n";
+print STDERR "CGIdir:      $lbcgidir\n";
+print STDERR "HTMLdir:     $lbhtmldir\n";
+print STDERR "Templatedir: $lbtemplatedir\n";
+print STDERR "Datadir:     $lbdatadir\n";
+print STDERR "Logdir:      $lblogdir\n";
+print STDERR "Configdir:   $lbconfigdir\n";
 
 # Start with HTML header
 print $cgi->header(
@@ -62,22 +67,12 @@ print $cgi->header(
         charset =>      'utf-8',
 );
 
-# Read general config
-$cfg	 	= new Config::Simple("$home/config/system/general.cfg") or die $cfg->error();
-$installfolder	= $cfg->param("BASE.INSTALLFOLDER");
-$lang		= $cfg->param("BASE.LANG");
+# Get language from GET, POST or System setting (from LoxBerry::Web)
+$lang = lblanguage();
 
 # Read plugin config
-$plugin_cfg 	= new Config::Simple("$installfolder/config/plugins/$psubfolder/pluginconfig.cfg") or die $plugin_cfg->error();
+$plugin_cfg 	= new Config::Simple("$lbconfigdir/pluginconfig.cfg") or die $plugin_cfg->error();
 $pname          = $plugin_cfg->param("MAIN.SCRIPTNAME");
-
-# Set parameters coming in - get over post
-if ( $cgi->param('lang') ) {
-	$lang = quotemeta( $cgi->param('lang') );
-}
-elsif ( $cgi->url_param('lang') ) {
-	$lang = quotemeta( $cgi->url_param('lang') );
-}
 
 ##########################################################################
 # Initialize html templates
@@ -87,15 +82,15 @@ elsif ( $cgi->url_param('lang') ) {
 
 # Header # At the moment not in HTML::Template format
 #$headertemplate = HTML::Template->new(
-#	filename => "$installfolder/templates/system/$lang/header.html",
+#	filename => "$lbhomedir/templates/system/$lang/header.html",
 #	die_on_bad_params => 0,
 #	associate => $cgi,
 #);
 
 # Main
-#$maintemplate = HTML::Template->new(filename => "$installfolder/templates/plugins/$psubfolder/multi/main.html");
+#$maintemplate = HTML::Template->new(filename => "$lbtemplatedir/multi/main.html");
 $maintemplate = HTML::Template->new(
-	filename => "$installfolder/templates/plugins/$psubfolder/multi/main.html",
+	filename => "$lbtemplatedir/multi/main.html",
 	global_vars => 1,
 	loop_context_vars => 1,
 	die_on_bad_params => 0,
@@ -105,10 +100,12 @@ $maintemplate = HTML::Template->new(
 
 # Footer # At the moment not in HTML::Template format
 #$footertemplate = HTML::Template->new(
-#	filename => "$installfolder/templates/system/$lang/footer.html",
+#	filename => "$lbhomedir/templates/system/$lang/footer.html",
 #	die_on_bad_params => 0,
 #	associate => $cgi,
 #);
+
+
 
 ##########################################################################
 # Translations
@@ -122,11 +119,11 @@ $lang         = substr($lang,0,2);
 # Read Plugin transations
 # Read English language as default
 # Missing phrases in foreign language will fall back to English
-$languagefileplugin 	= "$installfolder/templates/plugins/$psubfolder/en/language.txt";
+$languagefileplugin 	= "$lbtemplatedir/en/language.txt";
 Config::Simple->import_from($languagefileplugin, \%TPhrases);
 
 # Read foreign language if exists and not English
-$languagefileplugin = "$installfolder/templates/plugins/$psubfolder/$lang/language.txt";
+$languagefileplugin = "$lbtemplatedir/$lang/language.txt";
 # Now overwrite phrase variables with user language
 if ((-e $languagefileplugin) and ($lang ne 'en')) {
 	Config::Simple->import_from($languagefileplugin, \%TPhrases);
@@ -161,7 +158,7 @@ while (my ($name, $value) = each %TPhrases){
 # Create an array with the sections we would like to read. These
 # Sections exist in the plugin config file.
 # See https://wiki.selfhtml.org/wiki/Perl/Listen_bzw._Arrays
-@sections = ("SECTION1","SECTION2","SECTION3");
+my @sections = ("SECTION1","SECTION2","SECTION3");
 
 # Now we put the options from the 3 sections into a (new) hash (we check if
 # they exist at first). This newly created hash will be referenced in an array.
@@ -213,10 +210,16 @@ $maintemplate->param( ANOTHERNAME => "This is another Name" );
 # Header
 #print $headertemplate->output;
 
+# In LoxBerry V0.2.x we use the old LoxBerry::Web header
+LoxBerry::Web::lbheader("Sample Plugin V2", "https://www.loxforum.com/forum/projektforen/loxberry/entwickler/84645-best-practise-perl-programmierung-im-loxberry");
+
 # Main
 print $maintemplate->output;
 
 # Footer
 #print $footertemplate->output;
+
+# In LoxBerry V0.2.x we use the old LoxBerry::Web footer
+LoxBerry::Web::lbfooter();
 
 exit;
