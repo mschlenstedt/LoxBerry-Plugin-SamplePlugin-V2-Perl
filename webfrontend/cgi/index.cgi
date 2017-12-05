@@ -16,40 +16,32 @@
 ##########################################################################
 # Modules
 ##########################################################################
-use FindBin;
-use lib "$FindBin::Bin/./perllib";
 use LoxBerry::System;
 use LoxBerry::Web;
 
-use CGI::Carp qw(fatalsToBrowser);
 use CGI qw/:standard/;
-use Config::Simple;
-# String::Escape needs to be installed!
-# use String::Escape qw( unquotemeta );
-use HTML::Template;
 use warnings;
 use strict;
-no strict "refs"; # we need it for template system and for contructs like ${"skalar".$i} in loops
 
 ##########################################################################
 # Variables
 ##########################################################################
+
+# Version of this script
+my $version = LoxBerry::System::pluginversion() . "-1";
+
 my  $cgi = new CGI;
 my  $plugin_cfg;
 my  $lang;
-my  $languagefile;
-my  $version;
-my  $pname;
-my  $languagefileplugin;
-my  %TPhrases;
-my  $maintemplate;
+
+# Define your plugin title, help and help link 
+my $plugintitle = "Sample Plugin V$version";
+my $helplink = "https://www.loxforum.com/forum/projektforen/loxberry/entwickler/84645-best-practise-perl-programmierung-im-loxberry";
+my $helptemplate = "help_myloxberry.html";
 
 ##########################################################################
 # Read Settings
 ##########################################################################
-
-# Version of this script
-$version = "0.02";
 
 print STDERR "Global variables from LoxBerry::System\n";
 print STDERR "Homedir:     $lbhomedir\n";
@@ -61,80 +53,50 @@ print STDERR "Datadir:     $lbdatadir\n";
 print STDERR "Logdir:      $lblogdir\n";
 print STDERR "Configdir:   $lbconfigdir\n";
 
-# Start with HTML header
-print $cgi->header(
-        -type    =>      'text/html',
-        -charset =>      'utf-8',
-);
-
-# Get language from GET, POST or System setting (from LoxBerry::Web)
-$lang = lblanguage();
 
 # Read plugin config
 $plugin_cfg 	= new Config::Simple("$lbconfigdir/pluginconfig.cfg") or die $plugin_cfg->error();
-$pname          = $plugin_cfg->param("MAIN.SCRIPTNAME");
+my %pcfg = $plugin_cfg->vars();
+my $pname = $pcfg{'MAIN.SCRIPTNAME'};
+
+# Import form data to namespace (easier access)
+$cgi->import_names('R');
+# Now access form variables by: $R::formvariable
 
 ##########################################################################
 # Initialize html templates
 ##########################################################################
 
-# See http://www.perlmonks.org/?node_id=65642
-
-# Header # At the moment not in HTML::Template format
-#$headertemplate = HTML::Template->new(
-#	filename => "$lbhomedir/templates/system/$lang/header.html",
-#	die_on_bad_params => 0,
-#	associate => $cgi,
-#);
+# See:
+# http://www.perlmonks.org/?node_id=65642
+# http://search.cpan.org/~samtregar/HTML-Template-2.6/Template.pm 
 
 # Main
-#$maintemplate = HTML::Template->new(filename => "$lbtemplatedir/multi/main.html");
-$maintemplate = HTML::Template->new(
-	filename => "$lbtemplatedir/multi/main.html",
+my $maintemplate = HTML::Template->new(
+	filename => "$lbtemplatedir/main.html",
 	global_vars => 1,
 	loop_context_vars => 1,
 	die_on_bad_params => 0,
-	associate => $cgi,
+	associate => $plugin_cfg,
 );
-
-
-# Footer # At the moment not in HTML::Template format
-#$footertemplate = HTML::Template->new(
-#	filename => "$lbhomedir/templates/system/$lang/footer.html",
-#	die_on_bad_params => 0,
-#	associate => $cgi,
-#);
-
-
 
 ##########################################################################
 # Translations
 ##########################################################################
 
-# Init Language
-# Clean up lang variable
-$lang         =~ tr/a-z//cd;
-$lang         = substr($lang,0,2);
-
-# Read Plugin transations
-# Read English language as default
-# Missing phrases in foreign language will fall back to English
-$languagefileplugin 	= "$lbtemplatedir/en/language.txt";
-Config::Simple->import_from($languagefileplugin, \%TPhrases);
-
-# Read foreign language if exists and not English
-$languagefileplugin = "$lbtemplatedir/$lang/language.txt";
-# Now overwrite phrase variables with user language
-if ((-e $languagefileplugin) and ($lang ne 'en')) {
-	Config::Simple->import_from($languagefileplugin, \%TPhrases);
+# LoxBerry's template system will auto-detect users language.
+# To test the translations, you can call your cgi with ?lang=xx
+# This section overrides the language detection of LoxBerry::Web
+if ($R::lang) {
+	$LoxBerry::Web::lang = substr($R::lang, 0, 2);
 }
 
-# Parse phrase variables to html templates
-while (my ($name, $value) = each %TPhrases){
-	$maintemplate->param("T::$name" => $value);
-	#$headertemplate->param("T::$name" => $value);
-	#$footertemplate->param("T::$name" => $value);
-}
+# Get language from LoxBerry::Web
+$lang = lblanguage();
+
+%L = LoxBerry::Web::readlanguage($maintemplate, "language.ini");
+# In the HTML Template, all phrases are now accessible with <TMPL_VAR SECTION.PHRASE>
+# In the code, phrases are accessible with $L{'SECTION.PHRASE'}.
 
 ##########################################################################
 # Create some variables for the Template
@@ -207,19 +169,13 @@ $maintemplate->param( ANOTHERNAME => "This is another Name" );
 # Print Template
 ##########################################################################
 
-# Header
-#print $headertemplate->output;
-
-# In LoxBerry V0.2.x we use the old LoxBerry::Web header
-LoxBerry::Web::lbheader("Sample Plugin V2", "https://www.loxforum.com/forum/projektforen/loxberry/entwickler/84645-best-practise-perl-programmierung-im-loxberry");
+# LoxBerry::Web header
+LoxBerry::Web::lbheader($plugintitle, $helplink, $helptemplate);
 
 # Main
 print $maintemplate->output;
 
-# Footer
-#print $footertemplate->output;
-
-# In LoxBerry V0.2.x we use the old LoxBerry::Web footer
+# LoxBerry::Web footer
 LoxBerry::Web::lbfooter();
 
 exit;
