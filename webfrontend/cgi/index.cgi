@@ -63,8 +63,8 @@ print STDERR "Configdir:   $lbconfigdir\n";
 
 # Start with HTML header
 print $cgi->header(
-        type    =>      'text/html',
-        charset =>      'utf-8',
+        -type    =>      'text/html',
+        -charset =>      'utf-8',
 );
 
 # Get language from GET, POST or System setting (from LoxBerry::Web)
