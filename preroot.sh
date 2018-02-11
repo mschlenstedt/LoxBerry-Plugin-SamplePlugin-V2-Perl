@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Bash script which is executed by bash *BEFORE* installation is started
-# (*BEFORE* preinstall but *AFTER* preupdate). Use with caution and remember,
+# (*BEFORE* preinstall and *BEFORE* preupdate). Use with caution and remember,
 # that all systems may be different!
 #
 # Exit code must be 0 if executed successfull. 
