@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Bashscript which is executed by bash *AFTER* complete installation is done
+# Shell script which is executed by bash *AFTER* complete installation is done
 # (but *BEFORE* postupdate). Use with caution and remember, that all systems may
 # be different!
 #
