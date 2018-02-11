@@ -1,6 +1,6 @@
-#!/bin/sh
+#!/bin/bash
 
-# Bash script which is executed in case of an update (if this plugin is already
+# Shell script which is executed in case of an update (if this plugin is already
 # installed on the system). This script is executed as very first step (*BEFORE*
 # preinstall.sh) and can be used e.g. to save existing configfiles to /tmp 
 # during installation. Use with caution and remember, that all systems may be
