@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Shell script which is executed by bash *AFTER* complete installation is done
-# (*AFTER* postinstall but *BEFORE* postupdate). Use with caution and remember,
+# (*AFTER* postinstall and *AFTER* postupdate). Use with caution and remember,
 # that all systems may be different!
 #
 # Exit code must be 0 if executed successfull. 
