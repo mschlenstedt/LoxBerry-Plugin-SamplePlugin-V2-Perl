@@ -43,6 +43,8 @@ PCONFIG=$LBPCONFIG/$PDIR
 PSBIN=$LBPSBIN/$PDIR
 PBIN=$LBPBIN/$PDIR
 
+echo -n "<INFO> Current folder is:"
+pwd
 echo "<INFO> Command is: $COMMAND"
 echo "<INFO> Temporary folder is: $PTEMPDIR"
 echo "<INFO> (Short) Name is: $PSHNAME"
