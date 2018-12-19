@@ -60,4 +60,4 @@ echo "<INFO> Plugin Log folder (on RAMDISK!) is: $PLOG"
 echo "<INFO> Plugin CONFIG folder is: $PCONFIG"
 
 # Exit with Status 0
-exit 0
+exit 2
