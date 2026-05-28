@@ -1,18 +1,39 @@
 #!/bin/bash
 
-# This is a sample DAEMON file which is started at boottime. 
-# CAUTION! MAKE SURE YOUR SCRIPT EXITS CLEANLY! It is a good idea
-# to start your daemon as background process. If you do something wrong here
-# your user's systems may hang forever during boottime!
+# daemon - Init script executed at LoxBerry boot time.
+#
+# This file must be named exactly "daemon" in your plugin archive.
+# During installation it will be renamed to the plugin's NAME (from plugin.cfg)
+# and placed in the LoxBerry daemon directory ($LBHOMEDIR/system/daemons/plugins/).
+# It is then executed automatically at every system boot by loxberryinit.sh.
+#
+# IMPORTANT: This script runs as user "root".
+# IMPORTANT: Make sure this script exits cleanly and quickly!
+#   Start long-running processes as background daemons (with & or via screen/tmux).
+#   If this script blocks, the entire LoxBerry boot sequence will hang.
+#
+# You can use all variables from /etc/environment in this script.
+# The plugin-specific paths (LBPCGI, LBPHTML, etc.) are available via
+# $LBHOMEDIR and the plugin folder from /data/system/plugindatabase.dat.
 
-# Will be executed as user "root".
+# Read the plugin's actual installation folder from the plugin database.
+# Do not hardcode the folder name - it may have a numeric suffix (01, 02, ...).
+# PLUGINNAME is set by LoxBerry based on the NAME in plugin.cfg.
+# PLUGINDIR is the actual installation folder of this plugin.
 
-# Name this file "daemon" in your plugin-archive. It will be renamed to NAME
-# during installation
+# Example: start a background daemon process
+# PLUGINDIR=$(grep -A2 "NAME=$PLUGINNAME" /data/system/plugindatabase.dat | grep FOLDER | cut -d= -f2)
+# if [ -n "$PLUGINDIR" ]; then
+#     MYBINARY="$LBHOMEDIR/webfrontend/cgi/plugins/$PLUGINDIR/mydaemon.pl"
+#     if [ -x "$MYBINARY" ]; then
+#         "$MYBINARY" &
+#         logger "LoxBerry plugin $PLUGINNAME: daemon started (PID $!)"
+#     fi
+# fi
 
-if [ -x /usr/bin/logger ]
-then
-    /usr/bin/logger "This is just a sample DAEMON script from Sample Plugin"
+# Log a message to the system log so we can verify the daemon script ran
+if [ -x /usr/bin/logger ]; then
+    /usr/bin/logger "LoxBerry Sample Plugin: daemon script executed at boot"
 fi
 
 exit 0

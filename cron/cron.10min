@@ -1,10 +1,17 @@
 #!/bin/bash
 
-# This is a sample cron file. According to it's name it will go to
-# ~/system/cron/cron.10min. You may also let your Pluginscript create a
-# symbolic link dynamically in ~/system/cron/cron.10min which links to your
-# cron-script instead (which is prefered). Use NAME from
-# /data/system/plugindatabase.dat in that case as scriptname! Otherwise the
-# cron script will not be uninstalled cleanly.
+# cron/cron.10min - Script executed every 10 minutes by LoxBerry's cron system.
+#
+# This file is installed to $LBHOMEDIR/system/cron/cron.10min/<NAME> during
+# plugin installation, where NAME is the plugin's short name from plugin.cfg.
+# LoxBerry calls all scripts in that directory every 10 minutes.
+#
+# Runs as user "loxberry".
+#
+# Tip: You can also create this symlink dynamically in postinstall.sh pointing
+# to a script in your plugin's bin/ directory. Use the plugin NAME as the
+# symlink filename so it is removed cleanly on uninstall.
 
-# Will be executed as user "loxberry".
+# Add your 10-minute task here.
+# Example: poll a sensor and write result to a data file
+# echo "$(date): still running" >> "$LBPDATA/sampleplugin_folder/status.txt"

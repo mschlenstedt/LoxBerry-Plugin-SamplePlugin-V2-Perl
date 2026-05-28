@@ -1,0 +1,21 @@
+# Force LF line endings for all shell scripts and config files.
+# These files are executed on Linux (LoxBerry/Raspberry Pi) and must not
+# have Windows-style CRLF line endings, which cause "bad interpreter" errors.
+
+* text=auto
+
+*.sh    text eol=lf
+*.cgi   text eol=lf
+*.pl    text eol=lf
+*.pm    text eol=lf
+*.cfg   text eol=lf
+*.ini   text eol=lf
+*.html  text eol=lf
+*.dat   text eol=lf
+
+# Files without extension (daemon, uninstall, sudoers, apt)
+daemon/daemon       text eol=lf
+uninstall/uninstall text eol=lf
+sudoers/sudoers     text eol=lf
+dpkg/apt            text eol=lf
+cron/crontab        text eol=lf

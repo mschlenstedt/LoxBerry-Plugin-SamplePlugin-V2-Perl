@@ -1,6 +1,16 @@
-# These packages will be installed by apt-get -y install PACKAGENAME
-# One line per package, use exact packagename as you would do for apt-get.
+# dpkg/apt - List of system packages to install via apt-get during plugin installation.
 #
-package1
-package2
-package3
+# LoxBerry runs "apt-get install -y <package>" for each non-empty, non-comment line
+# in this file. One package name per line. Use the exact package name as you would
+# pass it to apt-get on the command line.
+#
+# This file is processed automatically during installation - you do not need to
+# call apt-get yourself in your install scripts.
+#
+# Only list packages that are not installed by default on LoxBerry (Raspbian/DietPi).
+# Unnecessary package installations slow down plugin installation for users.
+#
+# Examples:
+# libwww-perl
+# python3-requests
+# jq

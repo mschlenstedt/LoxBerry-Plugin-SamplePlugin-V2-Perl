@@ -1,2 +1,24 @@
-# Sudoers file for the plugin. Note: All scripts in sbin will be added automatically
-%loxberry ALL = NOPASSWD: REPLACELBPBINDIR/hereiswhatwehavetodoasroot
+# sudoers/sudoers - Sudoers rules for this plugin.
+#
+# This file is installed to /etc/sudoers.d/<NAME> during plugin installation,
+# where NAME is the plugin's short name from plugin.cfg.
+# It allows the "loxberry" user to run specific scripts as root without a password.
+#
+# IMPORTANT: All scripts placed in the plugin's sbin/ directory are automatically
+# granted sudo access during installation - you do not need to list them here.
+# Only add entries here for scripts outside of sbin/ that need root access.
+#
+# The placeholder REPLACELBPBINDIR is automatically replaced by the installer
+# with the actual path to this plugin's bin/ directory.
+# Other available placeholders:
+#   REPLACELBPCGIDIR    -> webfrontend/cgi/plugins/<folder>/
+#   REPLACELBPHTMLDIR   -> webfrontend/html/plugins/<folder>/
+#   REPLACELBPTEMPLATEDIR -> templates/plugins/<folder>/
+#   REPLACELBPDATADIR   -> data/plugins/<folder>/
+#   REPLACELBPCONFIGDIR -> config/plugins/<folder>/
+#   REPLACELBPSBINDIR   -> sbin/plugins/<folder>/
+#   REPLACELBPBINDIR    -> bin/plugins/<folder>/
+#   REPLACELBPPLUGINDIR -> <actual plugin folder name>
+
+# Example: allow loxberry to run a specific script in bin/ as root
+# %loxberry ALL = NOPASSWD: REPLACELBPBINDIR/script-that-needs-root.sh

@@ -1,12 +1,18 @@
-# /etc/cron.d/PLUGINNAME: plugin crontab
-# Unlike any other crontab you don't have to run the `crontab'
-# command to install the new version when you edit this file
-# and files in /etc/cron.d. These files also have username fields,
-# that none of the other crontabs do.
+# cron/crontab - Standard crontab file for scheduled plugin tasks.
+#
+# This file is installed to /etc/cron.d/<NAME> during plugin installation,
+# where NAME is the plugin's short name from plugin.cfg.
+# It uses the extended crontab format with a username field (unlike user crontabs).
+# Changes to this file take effect immediately without running the crontab command.
+#
+# Alternatively, use the cron.10min or cron.hourly files for simpler scheduling.
+# If you create symlinks from $LBHOMEDIR/system/cron/ in postinstall.sh, use
+# the plugin NAME as the symlink target filename for clean uninstall.
 
 MAILTO=""
 SHELL=/bin/sh
 PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
 
-# m h dom mon dow user  command
-0   *  * * *   loxberry        echo "Do something funny" > /dev/null 2>&1
+# Format: minute hour day-of-month month day-of-week user command
+# m  h  dom  mon  dow  user      command
+# 0  *  *    *    *    loxberry  /opt/loxberry/webfrontend/cgi/plugins/sampleplugin_folder/somescript.sh

@@ -1,61 +1,68 @@
 #!/bin/bash
 
-# Bashscript which is executed by bash when uninstalling the plugin
-# Use with caution and remember, that all systems may be different!
+# uninstall - Executed when the plugin is uninstalled via the LoxBerry Plugin Manager.
+# Runs as user "ROOT".
+# Use this to clean up anything that your plugin created outside of its own plugin
+# directories (e.g. system service entries, entries in /etc, external symlinks).
+# The plugin's own directories (config, data, html, cgi, templates, log, bin, sbin)
+# are removed automatically by LoxBerry - you do not need to delete them here.
+# Use with caution - remember that all target systems may differ.
 #
-# Exit code must be 0 if executed successfull. 
-# Exit code 1 gives a warning but continues deinstallation.
+# Exit codes:
+#   0 = success, uninstallation continues
+#   1 = warning, uninstallation continues but a warning is shown
 #
-# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-# Will be executed as user "root".
-# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+# All variables from /etc/environment are available in this script.
 #
-# You can use all vars from /etc/environment in this script.
+# Arguments passed to this script:
+#   $0 = path to this script
+#   $1 = temporary folder used during uninstallation (short form)
+#   $2 = plugin short name (NAME from plugin.cfg)
+#   $3 = plugin installation folder (FOLDER from plugin.cfg)
+#   $4 = plugin version (VERSION from plugin.cfg)
 #
-# We add 5 additional arguments when executing this script:
-# command <TEMPFOLDER> <NAME> <FOLDER> <VERSION> <BASEFOLDER>
-#
-# For logging, print to STDOUT. You can use the following tags for showing
-# different colorized information during plugin installation:
-#
-# <OK> This was ok!"
-# <INFO> This is just for your information."
-# <WARNING> This is a warning!"
-# <ERROR> This is an error!"
-# <FAIL> This is a fail!"
+# Output tags for colorized uninstaller log:
+#   <OK>      green  - operation successful
+#   <INFO>    blue   - informational message
+#   <WARNING> yellow - non-fatal warning
+#   <ERROR>   red    - error
+#   <FAIL>    red    - failure
 
-# To use important variables from command line use the following code:
-COMMAND=$0    # Zero argument is shell command
-PTEMPDIR=$1   # First argument is temp folder during install
-PSHNAME=$2    # Second argument is Plugin-Name for scipts etc.
-PDIR=$3       # Third argument is Plugin installation folder
-PVERSION=$4   # Forth argument is Plugin version
-#LBHOMEDIR=$5 # Comes from /etc/environment now. Fifth argument is
-              # Base folder of LoxBerry
+COMMAND=$0      # Path to this script
+PTEMPDIR=$1     # Temporary folder during uninstallation
+PSHNAME=$2      # Plugin short name
+PDIR=$3         # Plugin installation folder
+PVERSION=$4     # Plugin version
 
-# Combine them with /etc/environment
+# Build full plugin-specific paths from environment variables
 PCGI=$LBPCGI/$PDIR
 PHTML=$LBPHTML/$PDIR
 PTEMPL=$LBPTEMPL/$PDIR
 PDATA=$LBPDATA/$PDIR
-PLOG=$LBPLOG/$PDIR # Note! This is stored on a Ramdisk now!
+PLOG=$LBPLOG/$PDIR
 PCONFIG=$LBPCONFIG/$PDIR
 PSBIN=$LBPSBIN/$PDIR
 PBIN=$LBPBIN/$PDIR
 
 echo "<INFO> Command is: $COMMAND"
-echo "<INFO> Temporary folder is: $TEMPDIR"
-echo "<INFO> (Short) Name is: $PSHNAME"
-echo "<INFO> Installation folder is: $ARGV3"
-echo "<INFO> Plugin version is: $ARGV4"
+echo "<INFO> Temporary folder is: $PTEMPDIR"
+echo "<INFO> Plugin short name is: $PSHNAME"
+echo "<INFO> Installation folder is: $PDIR"
+echo "<INFO> Plugin version is: $PVERSION"
 echo "<INFO> Plugin CGI folder is: $PCGI"
 echo "<INFO> Plugin HTML folder is: $PHTML"
 echo "<INFO> Plugin Template folder is: $PTEMPL"
 echo "<INFO> Plugin Data folder is: $PDATA"
-echo "<INFO> Plugin Log folder (on RAMDISK!) is: $PLOG"
-echo "<INFO> Plugin CONFIG folder is: $PCONFIG"
+echo "<INFO> Plugin Log folder is: $PLOG"
+echo "<INFO> Plugin Config folder is: $PCONFIG"
 echo "<INFO> Plugin SBIN folder is: $PSBIN"
 echo "<INFO> Plugin BIN folder is: $PBIN"
 
-# Exit with Status 0
+# Add cleanup tasks here for anything your plugin created outside its own directories.
+# Example: remove a symlink created by the plugin
+# if [ -L /etc/some-link ]; then
+#   rm /etc/some-link
+#   echo "<OK> Removed symlink /etc/some-link"
+# fi
+
 exit 0
