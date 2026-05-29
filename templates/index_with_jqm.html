@@ -128,16 +128,8 @@
 
 
 <!-- ============================================================ DATEPICKER -->
-<!--
-    jQuery UI Datepicker ist nicht im LoxBerry-System enthalten.
-    lbheader() lädt nur jQuery Core + jQuery Mobile.
-    Wir laden jQuery UI hier selbst nach — genau wie der offizielle
-    jQuery Mobile Demo (demos.jquerymobile.com/1.4.5/datepicker/).
-    Voraussetzung: der Browser hat Internetzugang (CDN-Zugriff).
--->
-<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
-<script src="//code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
-
+<!-- type="text" + jQuery UI Datepicker; type="date" is browser-dependent.
+     The script block below initializes the calendar via $.datepicker(). -->
 <h3><TMPL_VAR BASIC.H_DATEPICKER></h3>
 <p><TMPL_VAR BASIC.DESC_DATEPICKER></p>
 <p><a href="https://demos.jquerymobile.com/1.4.5/datepicker/" target="_blank">jQuery Mobile Docs: Datepicker</a></p>
@@ -404,17 +396,10 @@ function showStatus(message, isError) {
 // ----------------------------------------------------------------
 $(document).on("pagecreate", function() {
 
-    // jQuery UI Datepicker initialisieren.
-    // beforeShow: z-index-Fix für jQuery Mobile — das jQM-Page-Overlay
-    // hat einen hohen z-index und würde das Kalender-Popup verstecken.
-    $("#date1").datepicker({
-        dateFormat: "yy-mm-dd",
-        beforeShow: function() {
-            setTimeout(function() {
-                $(".ui-datepicker").css("z-index", 9999);
-            }, 0);
-        }
-    });
+    // Initialize jQuery UI Datepicker (if available)
+    if (typeof $.datepicker !== "undefined") {
+        $("#date1").datepicker({ dateFormat: "yy-mm-dd" });
+    }
 
     // Load config and pre-fill form fields
     loadConfig();
