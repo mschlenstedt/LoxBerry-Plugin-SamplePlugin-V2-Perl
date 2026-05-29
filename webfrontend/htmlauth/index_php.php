@@ -27,11 +27,11 @@ $cfg = LBSystem::lbfromjson("$lbpconfigdir/pluginconfig.json");
 # Navbar
 ##########################################################################
 
-$navbar[10]['Name']   = $L['BASIC.LABEL_PERL_JQM'];
+$navbar[10]['Name']   = $L['BASIC.LABEL_PERL_NOJQM'];
 $navbar[10]['URL']    = 'index.cgi';
 
-$navbar[20]['Name']   = $L['BASIC.LABEL_PERL_NOJQM'];
-$navbar[20]['URL']    = 'index_nojqm.cgi';
+$navbar[20]['Name']   = $L['BASIC.LABEL_PERL_JQM'];
+$navbar[20]['URL']    = 'index_with_jqm.cgi';
 
 $navbar[30]['Name']   = $L['BASIC.LABEL_PHP_JQM'];
 $navbar[30]['URL']    = 'index_php.php?form=main';
