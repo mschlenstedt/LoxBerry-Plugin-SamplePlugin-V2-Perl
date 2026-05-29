@@ -1,5 +1,8 @@
 <?php
 
+# jQuery Mobile variant — kept for reference only.
+# For new plugins use index.php (LoxBerry Design System) instead.
+
 ##########################################################################
 # Modules / Includes
 ##########################################################################
@@ -20,7 +23,7 @@ $form = isset($_REQUEST['form']) ? $_REQUEST['form'] : 'main';
 // Language phrases
 $L = LBSystem::readlanguage("language.ini");
 
-// Load plugin config
+// Load plugin config (read-only — writing is done via ajax-generic.php)
 $cfg = LBSystem::lbfromjson("$lbpconfigdir/pluginconfig.json");
 
 ##########################################################################
@@ -33,15 +36,15 @@ $navbar[10]['URL']    = 'index.cgi';
 $navbar[20]['Name']   = $L['BASIC.LABEL_PERL_JQM'];
 $navbar[20]['URL']    = 'index_with_jqm.cgi';
 
-$navbar[30]['Name']   = $L['BASIC.LABEL_PHP_JQM'];
-$navbar[30]['URL']    = 'index_php.php?form=main';
-$navbar[30]['active'] = ($form === 'main');
+$navbar[30]['Name']   = $L['BASIC.LABEL_PHP_NOJQM'];
+$navbar[30]['URL']    = 'index.php';
 
-$navbar[40]['Name']   = $L['BASIC.LABEL_PHP_NOJQM'];
-$navbar[40]['URL']    = 'index_php_nojqm.php';
+$navbar[40]['Name']   = $L['BASIC.LABEL_PHP_JQM'];
+$navbar[40]['URL']    = 'index_with_jqm.php?form=main';
+$navbar[40]['active'] = ($form === 'main');
 
 $navbar[90]['Name']   = $L['BASIC.LABEL_LOGS'];
-$navbar[90]['URL']    = 'index_php.php?form=logs';
+$navbar[90]['URL']    = 'index_with_jqm.php?form=logs';
 $navbar[90]['active'] = ($form === 'logs');
 
 ##########################################################################
@@ -75,8 +78,13 @@ exit;
 
 function form_main()
 {
-	global $L, $cfg;
-	include "$lbptemplatedir/index_php.html";
+	global $L, $lbpconfigdir, $lbptemplatedir;
+
+	// Config file path for ajax-generic.php (read/write from JavaScript)
+	$plugin_folder = basename($lbpconfigdir);
+	$ajaxCfgFile   = "LBPCONFIG/$plugin_folder/pluginconfig.json";
+
+	include "$lbptemplatedir/index_php_jqm.html";
 }
 
 ##########################################################################

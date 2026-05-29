@@ -110,11 +110,11 @@ sub preparetemplate
 	$navbar{20}{Name}   = "$L{'BASIC.LABEL_PERL_JQM'}";
 	$navbar{20}{URL}    = 'index_with_jqm.cgi';
 
-	$navbar{30}{Name}   = "$L{'BASIC.LABEL_PHP_JQM'}";
-	$navbar{30}{URL}    = 'index_php.php';
+	$navbar{30}{Name}   = "$L{'BASIC.LABEL_PHP_NOJQM'}";
+	$navbar{30}{URL}    = 'index.php';
 
-	$navbar{40}{Name}   = "$L{'BASIC.LABEL_PHP_NOJQM'}";
-	$navbar{40}{URL}    = 'index_php_nojqm.php';
+	$navbar{40}{Name}   = "$L{'BASIC.LABEL_PHP_JQM'}";
+	$navbar{40}{URL}    = 'index_with_jqm.php';
 
 	$navbar{90}{Name}   = "$L{'BASIC.LABEL_LOGS'}";
 	$navbar{90}{URL}    = 'index.cgi?form=logs';

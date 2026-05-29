@@ -1,8 +1,7 @@
 <?php
 
-# This is the nojqm variant of index_php.php.
-# jQuery Mobile is NOT loaded. The page uses the LoxBerry Design System
-# (lb-* CSS classes) instead. Pass true as the 4th argument to lbheader().
+# Primary entry point. Uses the LoxBerry Design System (lb-* classes), not jQuery Mobile.
+# Pass true as the 4th argument to lbheader() to suppress jQuery Mobile loading.
 # Use lb-* classes in your templates instead of jQuery Mobile data-role attributes.
 
 ##########################################################################
@@ -38,15 +37,15 @@ $navbar[10]['URL']    = 'index.cgi';
 $navbar[20]['Name']   = $L['BASIC.LABEL_PERL_JQM'];
 $navbar[20]['URL']    = 'index_with_jqm.cgi';
 
-$navbar[30]['Name']   = $L['BASIC.LABEL_PHP_JQM'];
-$navbar[30]['URL']    = 'index_php.php';
+$navbar[30]['Name']   = $L['BASIC.LABEL_PHP_NOJQM'];
+$navbar[30]['URL']    = 'index.php?form=main';
+$navbar[30]['active'] = ($form === 'main');
 
-$navbar[40]['Name']   = $L['BASIC.LABEL_PHP_NOJQM'];
-$navbar[40]['URL']    = 'index_php_nojqm.php?form=main';
-$navbar[40]['active'] = ($form === 'main');
+$navbar[40]['Name']   = $L['BASIC.LABEL_PHP_JQM'];
+$navbar[40]['URL']    = 'index_with_jqm.php';
 
 $navbar[90]['Name']   = $L['BASIC.LABEL_LOGS'];
-$navbar[90]['URL']    = 'index_php_nojqm.php?form=logs';
+$navbar[90]['URL']    = 'index.php?form=logs';
 $navbar[90]['active'] = ($form === 'logs');
 
 ##########################################################################
@@ -82,8 +81,8 @@ exit;
 
 function form_main()
 {
-	global $L, $cfg;
-	include "$lbptemplatedir/index_php_nojqm.html";
+	global $L, $cfg, $lbptemplatedir;
+	include "$lbptemplatedir/index_php.html";
 }
 
 ##########################################################################
