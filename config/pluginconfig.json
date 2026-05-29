@@ -2,16 +2,16 @@
 	"_comment": "Plugin configuration file. Read/write this file with LoxBerry::JSON (Perl) or lbfromjson/lbtojson (PHP). The web UI uses ajax-generic.php to read and write values without a page reload.",
 	"_comment_placeholders": "REPLACELBPPLUGINDIR and similar placeholders below are replaced by the LoxBerry installer with the actual plugin folder name.",
 	"MAIN": {
-		"_comment": "Example values for the index_with_jqm.cgi demo form. These are loaded on page load and saved via ajax-generic.php.",
+		"_comment": "Default values for the index.cgi demo form. These are loaded on page load and saved via ajax-generic.php.",
 		"text1":     "Hello LoxBerry",
-		"checkbox1": "1",
+		"checkbox1": "0",
 		"radio-v":   "b",
-		"radio-h":   "1",
-		"flip1":     "1",
-		"date1":     "2024-12-24",
+		"radio-h":   "0",
+		"flip1":     "0",
+		"date1":     "",
 		"range-min": "20",
 		"range-max": "80",
-		"select1":   "2",
-		"slider1":   "65"
+		"select1":   "0",
+		"slider1":   "50"
 	}
 }
