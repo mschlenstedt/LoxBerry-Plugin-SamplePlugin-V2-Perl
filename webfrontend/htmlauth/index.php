@@ -29,6 +29,28 @@ $L = LBSystem::readlanguage("language.ini");
 $plugincfg = json_decode(file_get_contents("$lbpconfigdir/pluginconfig.json"));
 
 ##########################################################################
+# Logging
+##########################################################################
+
+// LBLog::newLog() creates a log object.
+//   "name":    logical name of this log, shown in the LoxBerry Log Manager
+//   "append":  1 = append to the existing logfile instead of creating a new
+//              file on every page call (important for web scripts!)
+//   "addtime": 1 = prepend a timestamp to every log line
+// The plugin package is auto-detected from $lbpplugindir.
+// Full docs: https://wiki.loxberry.de/entwickler/php_modules/loxberrylog
+$log = LBLog::newLog([
+	"name"    => "index",
+	"append"  => 1,
+	"addtime" => 1,
+]);
+
+// INF() logs a message at INFO severity.
+// Other methods: DEB() (debug), OK(), WARN(), ERR(), CRIT()
+// https://wiki.loxberry.de/entwickler/php_modules/loxberrylog
+$log->INF("index.php called — form: $form");
+
+##########################################################################
 # Navbar
 ##########################################################################
 
