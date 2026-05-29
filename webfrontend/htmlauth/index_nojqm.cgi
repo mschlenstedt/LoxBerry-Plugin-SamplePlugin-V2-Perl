@@ -14,6 +14,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# This is the nojqm variant of index.cgi.
+# jQuery Mobile is NOT loaded. The page uses the LoxBerry Design System
+# (lb-* CSS classes) instead. Pass "nojqm" as the 4th argument to lbheader().
+# Use lb-* classes in your templates instead of jQuery Mobile data-role attributes.
+
 ##########################################################################
 # Modules
 ##########################################################################
@@ -116,23 +121,25 @@ sub preparetemplate
 	our %navbar;
 
 	$navbar{10}{Name}   = "$L{'BASIC.LABEL_MAIN'}";
-	$navbar{10}{URL}    = 'index.cgi?form=main';
+	$navbar{10}{URL}    = 'index_nojqm.cgi?form=main';
 	$navbar{10}{active} = 1 if $q->{form} eq "main";
 
 	$navbar{90}{Name}   = "$L{'BASIC.LABEL_LOGS'}";
-	$navbar{90}{URL}    = 'index.cgi?form=logs';
+	$navbar{90}{URL}    = 'index_nojqm.cgi?form=logs';
 	$navbar{90}{active} = 1 if $q->{form} eq "logs";
 
 	return();
 }
 
 ##########################################################################
-# Print template with LoxBerry header and footer
+# Print template with LoxBerry header and footer (nojqm mode)
 ##########################################################################
 
 sub printtemplate
 {
-	LoxBerry::Web::lbheader($L{'BASIC.LABEL_PLUGINTITLE'} . " V$version", "https://wiki.loxberry.de", "help.html");
+	# "nojqm" as 4th parameter: jQuery Mobile is not loaded,
+	# LoxBerry Design System (lb-* classes) is used instead.
+	LoxBerry::Web::lbheader($L{'BASIC.LABEL_PLUGINTITLE'} . " V$version", "https://wiki.loxberry.de", "help.html", "nojqm");
 	print LoxBerry::Log::get_notifications_html($lbpplugindir);
 	print $templateout->output();
 	LoxBerry::Web::lbfooter();
