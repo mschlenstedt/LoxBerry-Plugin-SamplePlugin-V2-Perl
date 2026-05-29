@@ -15,4 +15,4 @@ PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
 
 # Format: minute hour day-of-month month day-of-week user command
 # m  h  dom  mon  dow  user      command
-# 0  *  *    *    *    loxberry  /opt/loxberry/webfrontend/cgi/plugins/sampleplugin_folder/somescript.sh
+# 0  *  *    *    *    loxberry  <loxberryhomedir>/webfrontend/cgi/plugins/sampleplugin_folder/somescript.sh
