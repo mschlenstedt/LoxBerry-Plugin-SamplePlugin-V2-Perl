@@ -49,22 +49,24 @@ $q->{form} = "main" if !$q->{form};
 # LoxBerry::Log->new() creates a log object.
 #   name:    logical name of this log, shown in the LoxBerry Log Manager
 #   package: plugin folder — auto-detected from $lbpplugindir when omitted
-#   append:  1 = append to the existing logfile instead of creating a new
-#            file on every page call (important for CGI scripts!)
 #   addtime: 1 = prepend a timestamp to every log line
 # Full docs: https://wiki.loxberry.de/entwickler/perl_modules/loxberrylog
 my $log = LoxBerry::Log->new(
 	name    => 'index',
 	package => $lbpplugindir,
-	append  => 1,
 	addtime => 1,
 );
+
+# LOGSTART() registers the log session in the LoxBerry log database so it
+# appears in the Log Manager. Must be called before the first log message.
+# Without it, log files are written to disk but invisible in the Log Manager.
+$log->LOGSTART("index.cgi called");
 
 # LOGINF() uses the first-created log object automatically (the "main" object).
 # Other log levels: LOGDEB (debug), LOGOK, LOGWARN, LOGERR, LOGCRIT
 # Alternatively call the method on a specific object: $log->INF("message")
 # https://wiki.loxberry.de/entwickler/perl_modules/loxberrylog
-LOGINF("index.cgi called — form: $q->{form}");
+LOGINF("form: $q->{form}");
 
 ##########################################################################
 # Form dispatch
