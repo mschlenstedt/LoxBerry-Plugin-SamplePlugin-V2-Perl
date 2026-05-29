@@ -1,0 +1,20 @@
+{
+	"_comment": "Plugin configuration file - JSON format. Read/write with LoxBerry::JSON (Perl) or lbfromjson/lbtojson (PHP).",
+	"_comment_replacements": "The placeholder REPLACELBPPLUGINDIR is replaced by the installer with the actual plugin folder name. Other available placeholders: REPLACELBPCGIDIR, REPLACELBPHTMLDIR, REPLACELBPTEMPLATEDIR, REPLACELBPDATADIR, REPLACELBPCONFIGDIR, REPLACELBPLOGDIR, REPLACELBPBINDIR, REPLACELBPSBINDIR.",
+	"Main": {
+		"Subfolder": "REPLACELBPPLUGINDIR",
+		"SomeOtherOption": false
+	},
+	"Section1": {
+		"Name": "This is a Name from the first Section",
+		"Id": 10
+	},
+	"Section2": {
+		"Name": "This is a Name from the second Section",
+		"Id": 20
+	},
+	"Section3": {
+		"Name": "This is a Name from the third Section",
+		"Id": 30
+	}
+}
