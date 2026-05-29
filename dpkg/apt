@@ -1,14 +1,24 @@
-# dpkg/apt - List of system packages to install via apt-get during plugin installation.
+# dpkg/apt - Packages to install via apt-get for ALL LoxBerry/Debian versions.
 #
-# LoxBerry runs "apt-get install -y <package>" for each non-empty, non-comment line
-# in this file. One package name per line. Use the exact package name as you would
-# pass it to apt-get on the command line.
+# LoxBerry runs "apt-get install -y <package>" for each non-empty, non-comment
+# line in this file during plugin installation. One package name per line.
+# Use exact package names as you would pass them to apt-get.
 #
-# This file is processed automatically during installation - you do not need to
-# call apt-get yourself in your install scripts.
+# Selection logic (only ONE apt file is used per installation):
+#   1. dpkg/apt<DEBIAN_VERSION>  e.g. apt12 (Bookworm), apt13 (Trixie)  <- preferred
+#   2. dpkg/apt<LB_MAJOR>        e.g. apt3, apt2  (obsolete, do not use for new plugins)
+#   3. dpkg/apt                  this file, used as fallback if no version-specific file exists
 #
-# Only list packages that are not installed by default on LoxBerry (Raspbian/DietPi).
-# Unnecessary package installations slow down plugin installation for users.
+# For architecture-specific .deb packages (not from the repository), place them
+# in subdirectories named after the CPU architecture:
+#   dpkg/armv6l/   Raspberry Pi 1, Zero (32-bit ARMv6)
+#   dpkg/armv7l/   Raspberry Pi 2 Rev.1 (32-bit ARMv7)
+#   dpkg/aarch64/  Raspberry Pi 2-4, Zero 2 (64-bit ARM)
+#   dpkg/x86_64/   x86 64-bit (VirtualBox VM etc.)
+#   dpkg/riscv64/  RISC-V 64-bit
+#
+# Only list packages not already installed by default on LoxBerry.
+# Unnecessary installations slow down plugin setup for all users.
 #
 # Examples:
 # libwww-perl

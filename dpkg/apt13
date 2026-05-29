@@ -1,0 +1,8 @@
+# dpkg/apt13 - Packages to install via apt-get on Debian 13 (Trixie) only.
+#
+# This file is used instead of dpkg/apt when LoxBerry runs on Debian 13 (Trixie).
+#
+# Use this when a package has a different name or is only available in Trixie.
+# If this file exists, dpkg/apt is NOT used on Debian 13 systems.
+#
+# One package name per line, # for comments.
