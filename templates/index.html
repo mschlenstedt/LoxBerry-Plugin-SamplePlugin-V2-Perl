@@ -1,5 +1,114 @@
 <div class="lb-content">
 
+<!-- Plugin-specific CSS for lb-slider / lb-slider-wrap / lb-slider-value / lb-slider-labels.
+     Uses the same CSS variables as the LoxBerry Design System (design-tokens.css).
+     --lb-primary: #6dac20  |  --lb-border-color: #e5e5e5  |  --lb-radius: 4px -->
+<style>
+
+/* ---- lb-slider: LoxBerry DS styled range input ---- */
+.lb-slider {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 8px;
+    border-radius: 4px;
+    outline: none;
+    cursor: pointer;
+    /* Filled portion is driven by --lb-slider-fill, kept current via JS */
+    background: linear-gradient(
+        to right,
+        var(--lb-primary, #6dac20)       0%,
+        var(--lb-primary, #6dac20)       var(--lb-slider-fill, 50%),
+        var(--lb-border-color, #e5e5e5)  var(--lb-slider-fill, 50%),
+        var(--lb-border-color, #e5e5e5)  100%
+    );
+    transition: box-shadow 0.15s ease;
+}
+
+/* Thumb — Chrome / Safari / Edge */
+.lb-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: var(--lb-primary, #6dac20);
+    cursor: pointer;
+    border: 3px solid #fff;
+    box-shadow: 0 1px 5px rgba(0,0,0,.25);
+    transition: box-shadow 0.15s ease, transform 0.1s ease;
+}
+.lb-slider::-webkit-slider-thumb:hover {
+    box-shadow: 0 0 0 7px rgba(109,172,32,.18), 0 1px 5px rgba(0,0,0,.25);
+    transform: scale(1.07);
+}
+
+/* Track — Firefox */
+.lb-slider::-moz-range-track {
+    height: 8px;
+    border-radius: 4px;
+    background: var(--lb-border-color, #e5e5e5);
+    border: none;
+}
+/* Filled portion — Firefox */
+.lb-slider::-moz-range-progress {
+    height: 8px;
+    border-radius: 4px 0 0 4px;
+    background: var(--lb-primary, #6dac20);
+}
+/* Thumb — Firefox */
+.lb-slider::-moz-range-thumb {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: var(--lb-primary, #6dac20);
+    cursor: pointer;
+    border: 3px solid #fff;
+    box-shadow: 0 1px 5px rgba(0,0,0,.25);
+    box-sizing: border-box;
+}
+
+/* Focus ring — matches lb-input focus */
+.lb-slider:focus {
+    box-shadow: 0 0 0 3px rgba(109,172,32,.15);
+}
+
+/* Container: slider track + value badge side by side */
+.lb-slider-wrap {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+}
+
+/* Green badge showing the current numeric value */
+.lb-slider-value {
+    display: inline-block;
+    min-width: 2.8em;
+    text-align: center;
+    font-size: var(--lb-font-sm, 0.875rem);
+    font-weight: 600;
+    color: var(--lb-primary, #6dac20);
+    background: rgba(109,172,32,.08);
+    border: 1px solid rgba(109,172,32,.25);
+    border-radius: var(--lb-radius, 4px);
+    padding: 3px 8px;
+    flex-shrink: 0;
+    font-family: var(--lb-font-mono, monospace);
+}
+
+/* Min / max labels below the slider track */
+.lb-slider-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    color: var(--lb-text-muted, #737373);
+    margin-top: 6px;
+    padding: 0 3px;
+}
+
+</style>
+
 <h2><TMPL_VAR BASIC.HEADING_BASICSETTINGS></h2>
 <p><TMPL_VAR BASIC.INTRO_LINE1_DS></p>
 <p>
@@ -173,13 +282,23 @@
 <pre style="background:#f4f4f4;padding:0.8em 1em;border-radius:4px;overflow-x:auto;font-size:0.85em;margin-bottom:0.8em;"><code>&lt;div class="lb-form-row"&gt;
     &lt;label class="lb-form-label" for="slider1"&gt;Level:&lt;/label&gt;
     &lt;div class="lb-form-field"&gt;
-        &lt;input type="range" name="slider1" id="slider1" min="0" max="100" value="50"&gt;
+        &lt;div class="lb-slider-wrap"&gt;
+            &lt;input type="range" class="lb-slider" name="slider1" id="slider1"
+                   min="0" max="100" value="50"&gt;
+            &lt;span class="lb-slider-value" id="slider1-val"&gt;50&lt;/span&gt;
+        &lt;/div&gt;
+        &lt;div class="lb-slider-labels"&gt;&lt;span&gt;0&lt;/span&gt;&lt;span&gt;100&lt;/span&gt;&lt;/div&gt;
     &lt;/div&gt;
 &lt;/div&gt;</code></pre>
 <div class="lb-form-row">
     <label class="lb-form-label" for="slider1"><TMPL_VAR BASIC.LBL_LEVEL></label>
     <div class="lb-form-field">
-        <input type="range" name="slider1" id="slider1" min="0" max="100" value="50">
+        <div class="lb-slider-wrap">
+            <input type="range" class="lb-slider" name="slider1" id="slider1"
+                   min="0" max="100" value="50">
+            <span class="lb-slider-value" id="slider1-val">50</span>
+        </div>
+        <div class="lb-slider-labels"><span>0</span><span>100</span></div>
     </div>
 </div>
 
@@ -359,6 +478,34 @@ var i18n = {
 
 
 // ----------------------------------------------------------------
+// updateSlider(id, valId) — syncs the green filled-track gradient
+// (via CSS custom property --lb-slider-fill) and the value badge.
+// Call whenever the slider value changes programmatically.
+// ----------------------------------------------------------------
+function updateSlider(id, valId) {
+    var slider = document.getElementById(id);
+    if (!slider) return;
+    var pct = (slider.value - slider.min) / (slider.max - slider.min) * 100;
+    slider.style.setProperty('--lb-slider-fill', pct + '%');
+    if (valId) {
+        var el = document.getElementById(valId);
+        if (el) el.textContent = slider.value;
+    }
+}
+
+// ----------------------------------------------------------------
+// initSlider(id, valId) — registers the live 'input' event listener
+// for a slider and sets the initial display.
+// ----------------------------------------------------------------
+function initSlider(id, valId) {
+    var slider = document.getElementById(id);
+    if (!slider) return;
+    slider.addEventListener('input', function() { updateSlider(id, valId); });
+    updateSlider(id, valId);
+}
+
+
+// ----------------------------------------------------------------
 // loadConfig() — reads the saved config from ajax-generic.php
 // and fills all form fields with the stored values.
 //
@@ -396,8 +543,9 @@ function loadConfig() {
             // Selectmenu — lb-select (native select, no refresh needed)
             $("#select1").val(cfg.select1 || "0");
 
-            // Slider — native range input
+            // Slider — native range input; updateSlider syncs the fill + badge
             $("#slider1").val(cfg.slider1 || "50");
+            updateSlider('slider1', 'slider1-val');
 
             // Textarea
             $("#textarea1").val(cfg.textarea1 || "");
@@ -477,6 +625,7 @@ function showStatus(message, isError) {
 // event. Use the standard $(function() {...}) ready handler instead.
 // ----------------------------------------------------------------
 $(function() {
+    initSlider('slider1', 'slider1-val');
     loadConfig();
 });
 
