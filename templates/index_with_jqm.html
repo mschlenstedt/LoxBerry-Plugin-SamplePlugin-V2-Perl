@@ -128,14 +128,13 @@
 
 
 <!-- ============================================================ DATEPICKER -->
-<!-- type="text" + jQuery UI Datepicker; type="date" is browser-dependent.
-     The script block below initializes the calendar via $.datepicker(). -->
+<!-- type="date" uses the browser's built-in date picker — no jQuery UI needed. -->
 <h3><TMPL_VAR BASIC.H_DATEPICKER></h3>
 <p><TMPL_VAR BASIC.DESC_DATEPICKER></p>
 <p><a href="https://demos.jquerymobile.com/1.4.5/datepicker/" target="_blank">jQuery Mobile Docs: Datepicker</a></p>
 <div data-role="fieldcontain">
     <label for="date1"><TMPL_VAR BASIC.LBL_DATE></label>
-    <input type="text" name="date1" id="date1" placeholder="<TMPL_VAR BASIC.PH_DATE>">
+    <input type="date" name="date1" id="date1">
 </div>
 
 
@@ -395,11 +394,6 @@ function showStatus(message, isError) {
 // (pagecreate event).
 // ----------------------------------------------------------------
 $(document).on("pagecreate", function() {
-
-    // Initialize jQuery UI Datepicker (if available)
-    if (typeof $.datepicker !== "undefined") {
-        $("#date1").datepicker({ dateFormat: "yy-mm-dd" });
-    }
 
     // Load config and pre-fill form fields
     loadConfig();
