@@ -47,7 +47,7 @@ $q->{form} = "main" if !$q->{form};
 ##########################################################################
 
 if ($q->{form} eq "main") {
-	$template = LoxBerry::System::read_file("$lbptemplatedir/index_nojqm.html");
+	$template = LoxBerry::System::read_file("$lbptemplatedir/index.html");
 	&form_main();
 }
 elsif ($q->{form} eq "logs") {
@@ -55,7 +55,7 @@ elsif ($q->{form} eq "logs") {
 	&form_logs();
 }
 else {
-	$template = LoxBerry::System::read_file("$lbptemplatedir/index_nojqm.html");
+	$template = LoxBerry::System::read_file("$lbptemplatedir/index.html");
 	&form_main();
 }
 
