@@ -67,8 +67,7 @@ $navbar[40]['URL']    = 'index_with_jqm.php?form=main';
 $navbar[40]['active'] = ($form === 'main');
 
 $navbar[90]['Name']   = $L['BASIC.LABEL_LOGS'];
-$navbar[90]['URL']    = 'index_with_jqm.php?form=logs';
-$navbar[90]['active'] = ($form === 'logs');
+$navbar[90]['URL']    = 'index_with_jqm.cgi?form=logs';
 
 ##########################################################################
 # Header (jQuery Mobile loaded — default)

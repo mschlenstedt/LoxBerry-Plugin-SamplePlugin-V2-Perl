@@ -68,8 +68,7 @@ $navbar[40]['Name']   = $L['BASIC.LABEL_PHP_JQM'];
 $navbar[40]['URL']    = 'index_with_jqm.php';
 
 $navbar[90]['Name']   = $L['BASIC.LABEL_LOGS'];
-$navbar[90]['URL']    = 'index.php?form=logs';
-$navbar[90]['active'] = ($form === 'logs');
+$navbar[90]['URL']    = 'index.cgi?form=logs';
 
 ##########################################################################
 # Header (nojqm mode: LoxBerry Design System, no jQuery Mobile)
