@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<!--
+    webfrontend/html/ - Unauthenticated (public) web area.
+
+    Files placed here are installed to:
+      $LBHOMEDIR/webfrontend/html/plugins/<FOLDER>/
+
+    They are accessible WITHOUT LoxBerry login at:
+      http://<loxberry-ip>/plugins/<FOLDER>/
+
+    Use this area for content that must be reachable without authentication,
+    e.g. status widgets, API endpoints called by a Miniserver, or public assets.
+
+    For pages that require a logged-in LoxBerry user, use webfrontend/htmlauth/ instead.
+    That directory is protected by HTTP Basic Auth tied to LoxBerry's user management.
+-->
+<html>
+<head><title>Sample Plugin - Public Area</title></head>
+<body>
+<p>
+    This file is part of the <strong>public (unauthenticated)</strong> plugin web area.<br>
+    It is accessible without LoxBerry login at:
+    <code>http://&lt;loxberry-ip&gt;/plugins/&lt;FOLDER&gt;/</code>
+</p>
+</body>
+</html>
