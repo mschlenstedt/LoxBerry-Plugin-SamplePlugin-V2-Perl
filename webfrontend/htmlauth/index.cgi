@@ -108,30 +108,31 @@ sub form_main
 	$templateout->param("CFG_RANGE_MAX", $cfg->{MAIN}{'range-max'} // "80");
 	$templateout->param("CFG_SLIDER1",   $cfg->{MAIN}{slider1}     // "50");
 
-	# --- Boolean fields: pass 1 (true) or 0 (false) -------------------
-	# The template uses <TMPL_IF CFG_...>checked="checked"</TMPL_IF>
-	# HTML::Template treats 0 as false and 1 as true, same as Perl.
+	# --- Checked / selected attributes --------------------------------
+	# HTML::Template does not tolerate <TMPL_IF> inside HTML attribute
+	# lists reliably.  We therefore pass the attribute as a ready-made
+	# string: either 'checked="checked"' or '' (empty).
+	# In the template we use <TMPL_VAR ATTR_...> directly inside the tag.
 
-	$templateout->param("CFG_CHECKBOX1", ($cfg->{MAIN}{checkbox1} // "0") eq "1" ? 1 : 0);
-	$templateout->param("CFG_FLIP1",     ($cfg->{MAIN}{flip1}     // "0") eq "1" ? 1 : 0);
+	$templateout->param("ATTR_CHECKBOX1",
+		($cfg->{MAIN}{checkbox1} // "0") eq "1" ? 'checked="checked"' : '');
 
-	# --- Radio button groups: exactly one option is true --------------
+	$templateout->param("ATTR_FLIP1",
+		($cfg->{MAIN}{flip1} // "0") eq "1" ? 'checked="checked"' : '');
 
 	my $rv = $cfg->{MAIN}{'radio-v'} // "b";
-	$templateout->param("CFG_RADIO_V_A", $rv eq "a" ? 1 : 0);
-	$templateout->param("CFG_RADIO_V_B", $rv eq "b" ? 1 : 0);
-	$templateout->param("CFG_RADIO_V_C", $rv eq "c" ? 1 : 0);
+	$templateout->param("ATTR_RADIO_V_A", $rv eq "a" ? 'checked="checked"' : '');
+	$templateout->param("ATTR_RADIO_V_B", $rv eq "b" ? 'checked="checked"' : '');
+	$templateout->param("ATTR_RADIO_V_C", $rv eq "c" ? 'checked="checked"' : '');
 
 	my $rh = $cfg->{MAIN}{'radio-h'} // "0";
-	$templateout->param("CFG_RADIO_H_1", $rh eq "1" ? 1 : 0);
-	$templateout->param("CFG_RADIO_H_0", $rh eq "0" ? 1 : 0);
-
-	# --- Select menu: mark the stored value as selected ---------------
+	$templateout->param("ATTR_RADIO_H_1", $rh eq "1" ? 'checked="checked"' : '');
+	$templateout->param("ATTR_RADIO_H_0", $rh eq "0" ? 'checked="checked"' : '');
 
 	my $sel = $cfg->{MAIN}{select1} // "0";
-	$templateout->param("CFG_SELECT1_0", $sel eq "0" ? 1 : 0);
-	$templateout->param("CFG_SELECT1_1", $sel eq "1" ? 1 : 0);
-	$templateout->param("CFG_SELECT1_2", $sel eq "2" ? 1 : 0);
+	$templateout->param("ATTR_SELECT1_0", $sel eq "0" ? 'selected="selected"' : '');
+	$templateout->param("ATTR_SELECT1_1", $sel eq "1" ? 'selected="selected"' : '');
+	$templateout->param("ATTR_SELECT1_2", $sel eq "2" ? 'selected="selected"' : '');
 
 	return();
 }

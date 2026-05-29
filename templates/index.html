@@ -21,7 +21,7 @@
 <h3>Text Input</h3>
 <p>Einfaches einzeiliges Texteingabefeld. jQuery Mobile styled es automatisch auf Touch-Größe.</p>
 <p><a href="https://demos.jquerymobile.com/1.4.5/textinput/" target="_blank">jQuery Mobile Docs: Text Input</a></p>
-<!-- value="<TMPL_VAR CFG_TEXT1>" pre-fills this field with the stored config value -->
+<!-- TMPL_VAR CFG_TEXT1 pre-fills this field with the stored config value -->
 <div data-role="fieldcontain">
     <label for="text1">Name:</label>
     <input type="text" name="text1" id="text1" value="<TMPL_VAR CFG_TEXT1>" placeholder="Enter text">
@@ -41,11 +41,11 @@
 <h3>Checkbox</h3>
 <p>Checkbox in einem <code>fieldset</code> mit <code>data-role="controlgroup"</code>. Das <code>label</code> muss per <code>for</code>-Attribut auf die Input-ID zeigen — jQM versteckt den nativen Input und stylt das Label.</p>
 <p><a href="https://demos.jquerymobile.com/1.4.5/checkboxradio/" target="_blank">jQuery Mobile Docs: Checkbox &amp; Radio</a></p>
-<!-- <TMPL_IF CFG_CHECKBOX1>checked="checked"</TMPL_IF> adds checked only when the stored value is "1" -->
+<!-- ATTR_CHECKBOX1 is set to checked="checked" by index.cgi when the stored value is "1", otherwise empty -->
 <div data-role="fieldcontain">
     <fieldset data-role="controlgroup">
         <legend>Checkbox</legend>
-        <input type="checkbox" name="checkbox1" id="checkbox1" value="1"<TMPL_IF CFG_CHECKBOX1> checked="checked"</TMPL_IF>>
+        <input type="checkbox" name="checkbox1" id="checkbox1" value="1" <TMPL_VAR ATTR_CHECKBOX1>>
         <label for="checkbox1">Enable feature</label>
     </fieldset>
 </div>
@@ -55,15 +55,15 @@
 <h3>Radio Buttons (vertikal)</h3>
 <p>Mehrere Radio-Inputs in einer <code>controlgroup</code> — standardmäßig vertikal gestapelt. Nur ein Wert der Gruppe kann gleichzeitig ausgewählt sein.</p>
 <p><a href="https://demos.jquerymobile.com/1.4.5/checkboxradio/" target="_blank">jQuery Mobile Docs: Checkbox &amp; Radio</a></p>
-<!-- TMPL_IF sets checked="checked" on whichever option matches the stored value -->
+<!-- ATTR_RADIO_V_* is set to checked="checked" for whichever option matches the stored value -->
 <div data-role="fieldcontain">
     <fieldset data-role="controlgroup">
         <legend>Choose one:</legend>
-        <input type="radio" name="radio-v" id="radio-v1" value="a"<TMPL_IF CFG_RADIO_V_A> checked="checked"</TMPL_IF>>
+        <input type="radio" name="radio-v" id="radio-v1" value="a" <TMPL_VAR ATTR_RADIO_V_A>>
         <label for="radio-v1">Option A</label>
-        <input type="radio" name="radio-v" id="radio-v2" value="b"<TMPL_IF CFG_RADIO_V_B> checked="checked"</TMPL_IF>>
+        <input type="radio" name="radio-v" id="radio-v2" value="b" <TMPL_VAR ATTR_RADIO_V_B>>
         <label for="radio-v2">Option B</label>
-        <input type="radio" name="radio-v" id="radio-v3" value="c"<TMPL_IF CFG_RADIO_V_C> checked="checked"</TMPL_IF>>
+        <input type="radio" name="radio-v" id="radio-v3" value="c" <TMPL_VAR ATTR_RADIO_V_C>>
         <label for="radio-v3">Option C</label>
     </fieldset>
 </div>
@@ -76,9 +76,9 @@
 <div data-role="fieldcontain">
     <fieldset data-role="controlgroup" data-type="horizontal">
         <legend>Choose one:</legend>
-        <input type="radio" name="radio-h" id="radio-h1" value="1"<TMPL_IF CFG_RADIO_H_1> checked="checked"</TMPL_IF>>
+        <input type="radio" name="radio-h" id="radio-h1" value="1" <TMPL_VAR ATTR_RADIO_H_1>>
         <label for="radio-h1">Yes</label>
-        <input type="radio" name="radio-h" id="radio-h2" value="0"<TMPL_IF CFG_RADIO_H_0> checked="checked"</TMPL_IF>>
+        <input type="radio" name="radio-h" id="radio-h2" value="0" <TMPL_VAR ATTR_RADIO_H_0>>
         <label for="radio-h2">No</label>
     </fieldset>
 </div>
@@ -103,7 +103,7 @@
 <p><a href="https://demos.jquerymobile.com/1.4.5/flipswitch/" target="_blank">jQuery Mobile Docs: Flipswitch</a></p>
 <div data-role="fieldcontain">
     <label for="flip1">Active:</label>
-    <input type="checkbox" data-role="flipswitch" name="flip1" id="flip1"<TMPL_IF CFG_FLIP1> checked="checked"</TMPL_IF>>
+    <input type="checkbox" data-role="flipswitch" name="flip1" id="flip1" <TMPL_VAR ATTR_FLIP1>>
 </div>
 
 
@@ -143,9 +143,9 @@
 <div data-role="fieldcontain">
     <label for="select1">Mode:</label>
     <select name="select1" id="select1">
-        <option value="0"<TMPL_IF CFG_SELECT1_0> selected="selected"</TMPL_IF>>Off</option>
-        <option value="1"<TMPL_IF CFG_SELECT1_1> selected="selected"</TMPL_IF>>On</option>
-        <option value="2"<TMPL_IF CFG_SELECT1_2> selected="selected"</TMPL_IF>>Auto</option>
+        <option value="0" <TMPL_VAR ATTR_SELECT1_0>>Off</option>
+        <option value="1" <TMPL_VAR ATTR_SELECT1_1>>On</option>
+        <option value="2" <TMPL_VAR ATTR_SELECT1_2>>Auto</option>
     </select>
 </div>
 
