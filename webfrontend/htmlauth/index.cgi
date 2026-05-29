@@ -95,6 +95,16 @@ exit;
 sub form_main
 {
 	&preparetemplate();
+
+	# Pass the config file path to the template.
+	# JavaScript uses this path to load saved values on page load (loadConfig)
+	# and to write values on Save click (saveConfig) — both via ajax-generic.php.
+	#
+	# ajax-generic.php docs:
+	#   https://wiki.loxberry.de/entwickler/web_ui_development_in_loxberry/web_forms_client_server_communication_ajaxgenericphp
+	my ($plugin_folder) = $lbpconfigdir =~ m{/([^/]+)$};
+	$templateout->param("AJAXCFGFILE", "LBPCONFIG/$plugin_folder/pluginconfig.json");
+
 	return();
 }
 

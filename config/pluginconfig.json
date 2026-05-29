@@ -11,6 +11,8 @@
 		"range-min": "20",
 		"range-max": "80",
 		"select1":   "2",
-		"slider1":   "65"
+		"slider1":   "65",
+		"toggle1":   "1",
+		"textarea1": ""
 	}
 }

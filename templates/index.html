@@ -1,6 +1,485 @@
 <div class="lb-content">
-    <h2><TMPL_VAR BASIC.HEADING_BASICSETTINGS></h2>
-    <p><TMPL_VAR BASIC.SAMPLEPLUGIN_HINT></p>
-    <p><TMPL_VAR BASIC.SAMPLEPLUGIN_BESTPRACTISE></p>
-    <p><i><TMPL_VAR FOOTER.GREETING></i></p>
+
+<h2><TMPL_VAR BASIC.HEADING_BASICSETTINGS></h2>
+<p><TMPL_VAR BASIC.INTRO_LINE1_DS></p>
+<p>
+    <TMPL_VAR BASIC.INTRO_SAVE_PREFIX>
+    <a href="https://wiki.loxberry.de/entwickler/web_ui_development_in_loxberry/web_forms_client_server_communication_ajaxgenericphp"
+       target="_blank">ajax-generic.php</a>
+    <TMPL_VAR BASIC.INTRO_SAVE_TO>
+    <code><TMPL_VAR AJAXCFGFILE></code>.<br>
+    <TMPL_VAR BASIC.INTRO_LOAD>
+</p>
+
+<!-- Save button — calls saveConfig() which posts all form values via ajax-generic.php -->
+<button class="lb-btn lb-btn-primary" onclick="saveConfig(); return false;"><TMPL_VAR BASIC.BTN_SAVE></button>
+
+<!-- Status message shown briefly after save (success = green, error = red) -->
+<div id="save-status" style="display:none; padding:0.8em 1em; margin:0.5em 0; border-radius:4px;"></div>
+
+<!--
+    FORM FIELDS — SAVED TO CONFIG
+    ==============================
+    All fields are loaded on page load via JavaScript (loadConfig) from
+    pluginconfig.json and saved on Save click via JavaScript (saveConfig)
+    — both via ajax-generic.php.
+
+    ajax-generic.php docs:
+    https://wiki.loxberry.de/entwickler/web_ui_development_in_loxberry/web_forms_client_server_communication_ajaxgenericphp
+-->
+
+<!-- onsubmit="return false" prevents a normal page reload;
+     saveConfig() handles saving via AJAX instead. -->
+<form id="mainform" onsubmit="saveConfig(); return false;">
+
+
+<!-- ============================================================ TEXT INPUT -->
+<h3><TMPL_VAR BASIC.H_TEXTINPUT></h3>
+<p><TMPL_VAR BASIC.DESC_TEXTINPUT_DS></p>
+<p><a href="https://wiki.loxberry.de/entwickler/web_ui_development_in_loxberry/loxberry_design_system" target="_blank">LoxBerry DS Docs</a></p>
+<pre style="background:#f4f4f4;padding:0.8em 1em;border-radius:4px;overflow-x:auto;font-size:0.85em;margin-bottom:0.8em;"><code>&lt;div class="lb-form-row"&gt;
+    &lt;label class="lb-form-label" for="text1"&gt;Label:&lt;/label&gt;
+    &lt;div class="lb-form-field"&gt;
+        &lt;input class="lb-input" type="text" name="text1" id="text1"&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="lb-form-help hint"&gt;Hilfetext&lt;/div&gt;</code></pre>
+<div class="lb-form-row">
+    <label class="lb-form-label" for="text1"><TMPL_VAR BASIC.LBL_NAME></label>
+    <div class="lb-form-field">
+        <input class="lb-input" type="text" name="text1" id="text1" placeholder="<TMPL_VAR BASIC.PH_TEXT>">
+    </div>
+</div>
+
+
+<!-- ============================================================ CHECKBOX -->
+<h3><TMPL_VAR BASIC.H_CHECKBOX></h3>
+<p><TMPL_VAR BASIC.DESC_CHECKBOX_DS></p>
+<pre style="background:#f4f4f4;padding:0.8em 1em;border-radius:4px;overflow-x:auto;font-size:0.85em;margin-bottom:0.8em;"><code>&lt;div class="lb-form-row"&gt;
+    &lt;label class="lb-form-label"&gt;Gruppe:&lt;/label&gt;
+    &lt;div class="lb-form-field"&gt;
+        &lt;input type="checkbox" name="checkbox1" id="checkbox1" value="1"&gt;
+        &lt;label for="checkbox1"&gt;Feature aktivieren&lt;/label&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+<div class="lb-form-row">
+    <label class="lb-form-label"><TMPL_VAR BASIC.LBL_CHECKBOX></label>
+    <div class="lb-form-field">
+        <input type="checkbox" name="checkbox1" id="checkbox1" value="1">
+        <label for="checkbox1"><TMPL_VAR BASIC.LBL_ENABLE_FEATURE></label>
+    </div>
+</div>
+
+
+<!-- ============================================================ RADIO BUTTONS (VERTICAL) -->
+<h3><TMPL_VAR BASIC.H_RADIO_V></h3>
+<p><TMPL_VAR BASIC.DESC_RADIO_V_DS></p>
+<pre style="background:#f4f4f4;padding:0.8em 1em;border-radius:4px;overflow-x:auto;font-size:0.85em;margin-bottom:0.8em;"><code>&lt;div class="lb-form-row"&gt;
+    &lt;label class="lb-form-label"&gt;Option wählen:&lt;/label&gt;
+    &lt;div class="lb-form-field"&gt;
+        &lt;div&gt;&lt;input type="radio" name="radio-v" id="radio-v1" value="a"&gt; &lt;label for="radio-v1"&gt;Option A&lt;/label&gt;&lt;/div&gt;
+        &lt;div&gt;&lt;input type="radio" name="radio-v" id="radio-v2" value="b"&gt; &lt;label for="radio-v2"&gt;Option B&lt;/label&gt;&lt;/div&gt;
+        &lt;div&gt;&lt;input type="radio" name="radio-v" id="radio-v3" value="c"&gt; &lt;label for="radio-v3"&gt;Option C&lt;/label&gt;&lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+<div class="lb-form-row">
+    <label class="lb-form-label"><TMPL_VAR BASIC.LBL_CHOOSE_ONE></label>
+    <div class="lb-form-field">
+        <div><input type="radio" name="radio-v" id="radio-v1" value="a"> <label for="radio-v1">Option A</label></div>
+        <div><input type="radio" name="radio-v" id="radio-v2" value="b"> <label for="radio-v2">Option B</label></div>
+        <div><input type="radio" name="radio-v" id="radio-v3" value="c"> <label for="radio-v3">Option C</label></div>
+    </div>
+</div>
+
+
+<!-- ============================================================ RADIO BUTTONS (HORIZONTAL) — lb-btn-group -->
+<h3><TMPL_VAR BASIC.H_BTNGROUP></h3>
+<p><TMPL_VAR BASIC.DESC_BTNGROUP></p>
+<pre style="background:#f4f4f4;padding:0.8em 1em;border-radius:4px;overflow-x:auto;font-size:0.85em;margin-bottom:0.8em;"><code>&lt;div class="lb-form-row"&gt;
+    &lt;label class="lb-form-label"&gt;Option wählen:&lt;/label&gt;
+    &lt;div class="lb-form-field"&gt;
+        &lt;div class="lb-btn-group"&gt;
+            &lt;input type="radio" name="radio-h" id="radio-h1" value="1"&gt;
+            &lt;label for="radio-h1"&gt;Ja&lt;/label&gt;
+            &lt;input type="radio" name="radio-h" id="radio-h2" value="0"&gt;
+            &lt;label for="radio-h2"&gt;Nein&lt;/label&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+<div class="lb-form-row">
+    <label class="lb-form-label"><TMPL_VAR BASIC.LBL_CHOOSE_ONE></label>
+    <div class="lb-form-field">
+        <div class="lb-btn-group">
+            <input type="radio" name="radio-h" id="radio-h1" value="1">
+            <label for="radio-h1"><TMPL_VAR BASIC.OPT_YES></label>
+            <input type="radio" name="radio-h" id="radio-h2" value="0">
+            <label for="radio-h2"><TMPL_VAR BASIC.OPT_NO></label>
+        </div>
+    </div>
+</div>
+
+
+<!-- ============================================================ TOGGLE -->
+<h3><TMPL_VAR BASIC.H_TOGGLE></h3>
+<p><TMPL_VAR BASIC.DESC_TOGGLE></p>
+<pre style="background:#f4f4f4;padding:0.8em 1em;border-radius:4px;overflow-x:auto;font-size:0.85em;margin-bottom:0.8em;"><code>&lt;div class="lb-form-row"&gt;
+    &lt;label class="lb-form-label"&gt;Aktiv:&lt;/label&gt;
+    &lt;div class="lb-form-field"&gt;
+        &lt;label class="lb-toggle"&gt;
+            &lt;input type="checkbox" id="toggle1" name="toggle1"&gt;
+            &lt;span class="lb-toggle-slider"&gt;&lt;/span&gt;
+        &lt;/label&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+<div class="lb-form-row">
+    <label class="lb-form-label"><TMPL_VAR BASIC.LBL_ACTIVE></label>
+    <div class="lb-form-field">
+        <label class="lb-toggle">
+            <input type="checkbox" id="toggle1" name="toggle1">
+            <span class="lb-toggle-slider"></span>
+        </label>
+    </div>
+</div>
+
+
+<!-- ============================================================ SELECTMENU -->
+<h3><TMPL_VAR BASIC.H_SELECTMENU></h3>
+<p><TMPL_VAR BASIC.DESC_SELECTMENU_DS></p>
+<pre style="background:#f4f4f4;padding:0.8em 1em;border-radius:4px;overflow-x:auto;font-size:0.85em;margin-bottom:0.8em;"><code>&lt;div class="lb-form-row"&gt;
+    &lt;label class="lb-form-label" for="select1"&gt;Modus:&lt;/label&gt;
+    &lt;div class="lb-form-field"&gt;
+        &lt;select class="lb-select" name="select1" id="select1"&gt;
+            &lt;option value="0"&gt;Aus&lt;/option&gt;
+            &lt;option value="1"&gt;Ein&lt;/option&gt;
+            &lt;option value="2"&gt;Auto&lt;/option&gt;
+        &lt;/select&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+<div class="lb-form-row">
+    <label class="lb-form-label" for="select1"><TMPL_VAR BASIC.LBL_MODE></label>
+    <div class="lb-form-field">
+        <select class="lb-select" name="select1" id="select1">
+            <option value="0"><TMPL_VAR BASIC.OPT_OFF></option>
+            <option value="1"><TMPL_VAR BASIC.OPT_ON></option>
+            <option value="2"><TMPL_VAR BASIC.OPT_AUTO></option>
+        </select>
+    </div>
+</div>
+
+
+<!-- ============================================================ SLIDER (NATIVE) -->
+<h3><TMPL_VAR BASIC.H_SLIDER_NATIVE></h3>
+<p><TMPL_VAR BASIC.DESC_SLIDER_NATIVE></p>
+<pre style="background:#f4f4f4;padding:0.8em 1em;border-radius:4px;overflow-x:auto;font-size:0.85em;margin-bottom:0.8em;"><code>&lt;div class="lb-form-row"&gt;
+    &lt;label class="lb-form-label" for="slider1"&gt;Level:&lt;/label&gt;
+    &lt;div class="lb-form-field"&gt;
+        &lt;input type="range" name="slider1" id="slider1" min="0" max="100" value="50"&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+<div class="lb-form-row">
+    <label class="lb-form-label" for="slider1"><TMPL_VAR BASIC.LBL_LEVEL></label>
+    <div class="lb-form-field">
+        <input type="range" name="slider1" id="slider1" min="0" max="100" value="50">
+    </div>
+</div>
+
+
+<!-- ============================================================ TEXTAREA -->
+<h3><TMPL_VAR BASIC.H_TEXTAREA></h3>
+<p><TMPL_VAR BASIC.DESC_TEXTAREA></p>
+<pre style="background:#f4f4f4;padding:0.8em 1em;border-radius:4px;overflow-x:auto;font-size:0.85em;margin-bottom:0.8em;"><code>&lt;div class="lb-form-row"&gt;
+    &lt;label class="lb-form-label" for="textarea1"&gt;Notizen:&lt;/label&gt;
+    &lt;div class="lb-form-field"&gt;
+        &lt;textarea class="lb-textarea" name="textarea1" id="textarea1" rows="4"&gt;&lt;/textarea&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+<div class="lb-form-row">
+    <label class="lb-form-label" for="textarea1"><TMPL_VAR BASIC.LBL_TEXTAREA></label>
+    <div class="lb-form-field">
+        <textarea class="lb-textarea" name="textarea1" id="textarea1" rows="4" placeholder="<TMPL_VAR BASIC.PH_TEXTAREA>"></textarea>
+    </div>
+</div>
+
+
+<!-- Bottom save button -->
+<div style="margin-top:1.5em;">
+    <button class="lb-btn lb-btn-primary" type="submit"><TMPL_VAR BASIC.BTN_SAVE></button>
+</div>
+
+</form>
+
+
+<!-- ============================================================
+     UI DEMO WIDGETS (not saved to config)
+     The following widgets demonstrate additional LoxBerry DS UI elements.
+     ============================================================ -->
+
+
+<!-- ============================================================ BUTTON VARIANTS -->
+<h3><TMPL_VAR BASIC.H_BUTTON></h3>
+<p><TMPL_VAR BASIC.DESC_BUTTON_DS></p>
+<p><a href="https://wiki.loxberry.de/entwickler/web_ui_development_in_loxberry/loxberry_design_system" target="_blank">LoxBerry DS Docs</a></p>
+<pre style="background:#f4f4f4;padding:0.8em 1em;border-radius:4px;overflow-x:auto;font-size:0.85em;margin-bottom:0.8em;"><code>&lt;button class="lb-btn"&gt;Standard&lt;/button&gt;
+&lt;button class="lb-btn lb-btn-primary"&gt;Primary&lt;/button&gt;
+&lt;button class="lb-btn lb-btn-sm"&gt;Klein&lt;/button&gt;
+&lt;button class="lb-btn lb-btn-danger"&gt;Danger&lt;/button&gt;</code></pre>
+<div style="display:flex; flex-wrap:wrap; gap:0.5em; align-items:center; margin-bottom:0.5em;">
+    <button class="lb-btn"><TMPL_VAR BASIC.DEMO_ACTION></button>
+    <button class="lb-btn lb-btn-primary"><TMPL_VAR BASIC.BTN_SAVE></button>
+    <button class="lb-btn lb-btn-sm"><TMPL_VAR BASIC.DEMO_ACTION></button>
+    <button class="lb-btn lb-btn-danger"><TMPL_VAR BASIC.BTN_CLOSE></button>
+</div>
+
+
+<!-- ============================================================ GROUPING / COLLAPSIBLE -->
+<h3><TMPL_VAR BASIC.H_COLLAPSIBLE></h3>
+<p><TMPL_VAR BASIC.DESC_COLLAPSIBLE_DS></p>
+<p><a href="https://wiki.loxberry.de/entwickler/web_ui_development_in_loxberry/loxberry_design_system" target="_blank">LoxBerry DS Docs</a></p>
+<pre style="background:#f4f4f4;padding:0.8em 1em;border-radius:4px;overflow-x:auto;font-size:0.85em;margin-bottom:0.8em;"><code>&lt;details class="lb-collapsible" open&gt;
+    &lt;summary&gt;Abschnitt A&lt;/summary&gt;
+    &lt;div class="lb-collapsible-content"&gt;
+        Inhalt von Abschnitt A.
+    &lt;/div&gt;
+&lt;/details&gt;
+&lt;details class="lb-collapsible"&gt;
+    &lt;summary&gt;Abschnitt B&lt;/summary&gt;
+    &lt;div class="lb-collapsible-content"&gt;
+        Inhalt von Abschnitt B.
+    &lt;/div&gt;
+&lt;/details&gt;</code></pre>
+<details class="lb-collapsible" open>
+    <summary><TMPL_VAR BASIC.DEMO_SECTION_A></summary>
+    <div class="lb-collapsible-content">
+        <p><TMPL_VAR BASIC.DEMO_SECTION_A_TEXT_DS></p>
+    </div>
+</details>
+<details class="lb-collapsible">
+    <summary><TMPL_VAR BASIC.DEMO_SECTION_B></summary>
+    <div class="lb-collapsible-content">
+        <p><TMPL_VAR BASIC.DEMO_SECTION_B_TEXT></p>
+    </div>
+</details>
+<details class="lb-collapsible">
+    <summary><TMPL_VAR BASIC.DEMO_SECTION_C></summary>
+    <div class="lb-collapsible-content">
+        <p><TMPL_VAR BASIC.DEMO_SECTION_C_TEXT></p>
+    </div>
+</details>
+
+
+<!-- ============================================================ CARD -->
+<h3><TMPL_VAR BASIC.H_CARD></h3>
+<p><TMPL_VAR BASIC.DESC_CARD></p>
+<pre style="background:#f4f4f4;padding:0.8em 1em;border-radius:4px;overflow-x:auto;font-size:0.85em;margin-bottom:0.8em;"><code>&lt;div class="lb-card"&gt;
+    &lt;h4&gt;Titel&lt;/h4&gt;
+    &lt;p&gt;Inhalt der Card.&lt;/p&gt;
+&lt;/div&gt;</code></pre>
+<div class="lb-card">
+    <h4><TMPL_VAR BASIC.DEMO_SECTION_A></h4>
+    <p><TMPL_VAR BASIC.DEMO_SECTION_A_TEXT_DS></p>
+</div>
+
+
+<!-- ============================================================ TABLE -->
+<h3><TMPL_VAR BASIC.H_TABLE></h3>
+<p><TMPL_VAR BASIC.DESC_TABLE></p>
+<pre style="background:#f4f4f4;padding:0.8em 1em;border-radius:4px;overflow-x:auto;font-size:0.85em;margin-bottom:0.8em;"><code>&lt;table class="lb-table"&gt;
+    &lt;thead&gt;
+        &lt;tr&gt;&lt;th&gt;Key&lt;/th&gt;&lt;th&gt;Wert&lt;/th&gt;&lt;/tr&gt;
+    &lt;/thead&gt;
+    &lt;tbody&gt;
+        &lt;tr&gt;&lt;td&gt;text1&lt;/td&gt;&lt;td&gt;Hello LoxBerry&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr&gt;&lt;td&gt;slider1&lt;/td&gt;&lt;td&gt;65&lt;/td&gt;&lt;/tr&gt;
+    &lt;/tbody&gt;
+&lt;/table&gt;</code></pre>
+<table class="lb-table">
+    <thead>
+        <tr><th>Key</th><th>Wert</th></tr>
+    </thead>
+    <tbody>
+        <tr><td>text1</td><td>Hello LoxBerry</td></tr>
+        <tr><td>slider1</td><td>65</td></tr>
+        <tr><td>select1</td><td>2 (Auto)</td></tr>
+    </tbody>
+</table>
+
+
+<!-- ============================================================ MODAL -->
+<h3><TMPL_VAR BASIC.H_MODAL></h3>
+<p><TMPL_VAR BASIC.DESC_MODAL></p>
+<pre style="background:#f4f4f4;padding:0.8em 1em;border-radius:4px;overflow-x:auto;font-size:0.85em;margin-bottom:0.8em;"><code>&lt;button class="lb-btn"
+        onclick="document.getElementById('demo-modal').showModal()"&gt;
+    Modal öffnen
+&lt;/button&gt;
+
+&lt;dialog class="lb-modal" id="demo-modal"&gt;
+    &lt;h3&gt;Modal-Titel&lt;/h3&gt;
+    &lt;p&gt;Inhalt des Modals.&lt;/p&gt;
+    &lt;div style="display:flex;gap:8px;justify-content:flex-end"&gt;
+        &lt;button class="lb-btn lb-btn-sm"
+                onclick="document.getElementById('demo-modal').close()"&gt;Schließen&lt;/button&gt;
+    &lt;/div&gt;
+&lt;/dialog&gt;</code></pre>
+<button class="lb-btn" onclick="document.getElementById('demo-modal').showModal()"><TMPL_VAR BASIC.BTN_OPEN_MODAL></button>
+
+<dialog class="lb-modal" id="demo-modal">
+    <h3><TMPL_VAR BASIC.MODAL_TITLE></h3>
+    <p><TMPL_VAR BASIC.MODAL_TEXT></p>
+    <div style="display:flex;gap:8px;justify-content:flex-end">
+        <button class="lb-btn lb-btn-sm"
+                onclick="document.getElementById('demo-modal').close()"><TMPL_VAR BASIC.BTN_CLOSE></button>
+    </div>
+</dialog>
+
+
+<!-- ============================================================ NOT IN DS -->
+<h3><TMPL_VAR BASIC.H_DS_MISSING></h3>
+<ul>
+    <li><TMPL_VAR BASIC.DS_MISSING_RANGESLIDER></li>
+    <li><TMPL_VAR BASIC.DS_MISSING_FILTERABLE></li>
+</ul>
+
+
+<!-- ============================================================
+     JAVASCRIPT
+     ============================================================ -->
+<script>
+
+// Config file path — set by index.cgi via TMPL_VAR.
+// Used by both loadConfig() and saveConfig().
+var cfgFile = "<TMPL_VAR AJAXCFGFILE>";
+
+// Translatable strings for JavaScript status messages —
+// filled from language.ini via TMPL_VAR.
+var i18n = {
+    saved:     "<TMPL_VAR BASIC.JS_SAVED>",
+    loadError: "<TMPL_VAR BASIC.JS_LOAD_ERROR>",
+    saveError: "<TMPL_VAR BASIC.JS_SAVE_ERROR>"
+};
+
+
+// ----------------------------------------------------------------
+// loadConfig() — reads the saved config from ajax-generic.php
+// and fills all form fields with the stored values.
+//
+// Called automatically on page load (see below).
+//
+// ajax-generic.php docs:
+//   https://wiki.loxberry.de/entwickler/web_ui_development_in_loxberry/web_forms_client_server_communication_ajaxgenericphp
+// ----------------------------------------------------------------
+function loadConfig() {
+    $.ajax({
+        url:      "/admin/system/ajax/ajax-generic.php?read&file=" + encodeURIComponent(cfgFile),
+        type:     "GET",
+        dataType: "json",
+
+        success: function(data) {
+            // data is the full JSON from pluginconfig.json.
+            // data.MAIN holds our form field values.
+            var cfg = data.MAIN || {};
+
+            // Text Input
+            $("#text1").val(cfg.text1 || "");
+
+            // Checkbox — native, just set .prop("checked")
+            $("#checkbox1").prop("checked", cfg.checkbox1 === "1");
+
+            // Radio Buttons (vertical)
+            $("input[name='radio-v'][value='" + (cfg["radio-v"] || "b") + "']").prop("checked", true);
+
+            // Radio Buttons (horizontal) — lb-btn-group
+            $("input[name='radio-h'][value='" + (cfg["radio-h"] !== undefined ? cfg["radio-h"] : "1") + "']").prop("checked", true);
+
+            // Toggle — native checkbox inside lb-toggle label
+            $("#toggle1").prop("checked", cfg.toggle1 === "1");
+
+            // Selectmenu — lb-select (native select, no refresh needed)
+            $("#select1").val(cfg.select1 || "0");
+
+            // Slider — native range input
+            $("#slider1").val(cfg.slider1 || "50");
+
+            // Textarea
+            $("#textarea1").val(cfg.textarea1 || "");
+        },
+
+        error: function(xhr, status, error) {
+            showStatus(i18n.loadError + ": " + error, true);
+        }
+    });
+}
+
+
+// ----------------------------------------------------------------
+// saveConfig() — reads all form field values and writes them
+// via POST to ajax-generic.php into pluginconfig.json.
+//
+// ajax-generic.php performs a deep-merge: only the sent keys
+// are updated, all others are left unchanged.
+//
+// ajax-generic.php docs:
+//   https://wiki.loxberry.de/entwickler/web_ui_development_in_loxberry/web_forms_client_server_communication_ajaxgenericphp
+// ----------------------------------------------------------------
+function saveConfig() {
+
+    // Collect current form field values.
+    // Key names must match those in pluginconfig.json.
+    var data = {
+        MAIN: {
+            "text1":     $("#text1").val(),
+            "checkbox1": $("#checkbox1").is(":checked") ? "1" : "0",
+            "radio-v":   $("input[name='radio-v']:checked").val() || "",
+            "radio-h":   $("input[name='radio-h']:checked").val() || "",
+            "toggle1":   $("#toggle1").is(":checked") ? "1" : "0",
+            "select1":   $("#select1").val(),
+            "slider1":   $("#slider1").val(),
+            "textarea1": $("#textarea1").val()
+        }
+    };
+
+    $.ajax({
+        url:         "/admin/system/ajax/ajax-generic.php?write&file=" + encodeURIComponent(cfgFile),
+        type:        "POST",
+        contentType: "application/json",   // ajax-generic.php expects JSON in the body
+        data:        JSON.stringify(data), // convert JS object to JSON string
+
+        success: function(response) {
+            showStatus(i18n.saved, false);
+        },
+        error: function(xhr, status, error) {
+            showStatus(i18n.saveError + " " + xhr.status + ": " + error, true);
+        }
+    });
+}
+
+
+// ----------------------------------------------------------------
+// showStatus() — displays a brief success or error message
+// below the Save button; fades out after 2 seconds.
+// ----------------------------------------------------------------
+function showStatus(message, isError) {
+    var $s = $("#save-status");
+    $s.html(message)
+      .css({
+          "background-color": isError ? "#f8d7da" : "#d4edda",
+          "color":            isError ? "#721c24" : "#155724",
+          "border":           isError ? "1px solid #f5c6cb" : "1px solid #c3e6cb"
+      })
+      .show();
+    setTimeout(function() { $s.fadeOut(500); }, 2000);
+}
+
+
+// ----------------------------------------------------------------
+// Load config on page ready.
+// jQuery is available in nojqm mode (jquery-1.12.4.min.js is loaded
+// by lbheader), but jQuery Mobile widgets are not — so no pagecreate
+// event. Use the standard $(function() {...}) ready handler instead.
+// ----------------------------------------------------------------
+$(function() {
+    loadConfig();
+});
+
+</script>
+
 </div>
