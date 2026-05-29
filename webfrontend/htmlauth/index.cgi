@@ -70,69 +70,20 @@ sub form_main
 {
 	&preparetemplate();
 
-	# ------------------------------------------------------------------
-	# Pass config values to the template so every form field is
-	# pre-filled with the saved value when the page loads.
+	# Übergabe des Config-Dateipfads an das Template.
+	# Das JavaScript im Template nutzt diesen Pfad um beim Seitenaufruf
+	# die gespeicherten Werte per AJAX zu laden (loadConfig) und beim
+	# Klick auf Save zu schreiben (saveConfig).
 	#
-	# How it works:
-	#   1. We read $cfg (loaded above) — it contains the JSON content
-	#      of pluginconfig.json as a Perl hash reference.
-	#   2. We call $templateout->param("VARNAME", value) to set a
-	#      template variable.  In the HTML template, <TMPL_VAR VARNAME>
-	#      is replaced by that value.
-	#   3. For checkboxes/radio buttons we pass 1 (true) or 0 (false).
-	#      <TMPL_IF VARNAME>checked="checked"</TMPL_IF> then adds the
-	#      HTML attribute only when the value is true.
-	#
-	# HTML::Template variable system:
-	#   https://wiki.loxberry.de/entwickler/plugin_fur_den_loxberry_entwickeln_ab_version_1x/html-template_variable_system
-	# ------------------------------------------------------------------
-
-	# Build the ajax-generic.php file path for JavaScript.
-	# $lbpconfigdir ends with the plugin folder name, e.g.
+	# $lbpconfigdir endet mit dem Plugin-Ordnernamen, z.B.:
 	#   /opt/loxberry/config/plugins/sampleplugin_folder
-	# ajax-generic.php understands the placeholder LBPCONFIG which it
-	# expands to $LBHOMEDIR/config/plugins — so
-	#   LBPCONFIG/sampleplugin_folder/pluginconfig.json
-	# is the same file as $lbpconfigdir/pluginconfig.json.
-	# ajax-generic.php docs:
+	# ajax-generic.php versteht den Platzhalter LBPCONFIG und expandiert
+	# ihn zu $LBHOMEDIR/config/plugins.
+	#
+	# ajax-generic.php Doku:
 	#   https://wiki.loxberry.de/entwickler/web_ui_development_in_loxberry/web_forms_client_server_communication_ajaxgenericphp
 	my ($plugin_folder) = $lbpconfigdir =~ m{/([^/]+)$};
 	$templateout->param("AJAXCFGFILE", "LBPCONFIG/$plugin_folder/pluginconfig.json");
-
-	# --- Text and numeric fields: pass value as string ----------------
-
-	$templateout->param("CFG_TEXT1",     $cfg->{MAIN}{text1}       // "");
-	$templateout->param("CFG_DATE1",     $cfg->{MAIN}{date1}       // "");
-	$templateout->param("CFG_RANGE_MIN", $cfg->{MAIN}{'range-min'} // "20");
-	$templateout->param("CFG_RANGE_MAX", $cfg->{MAIN}{'range-max'} // "80");
-	$templateout->param("CFG_SLIDER1",   $cfg->{MAIN}{slider1}     // "50");
-
-	# --- Checked / selected attributes --------------------------------
-	# HTML::Template does not tolerate <TMPL_IF> inside HTML attribute
-	# lists reliably.  We therefore pass the attribute as a ready-made
-	# string: either 'checked="checked"' or '' (empty).
-	# In the template we use <TMPL_VAR ATTR_...> directly inside the tag.
-
-	$templateout->param("ATTR_CHECKBOX1",
-		($cfg->{MAIN}{checkbox1} // "0") eq "1" ? 'checked="checked"' : '');
-
-	$templateout->param("ATTR_FLIP1",
-		($cfg->{MAIN}{flip1} // "0") eq "1" ? 'checked="checked"' : '');
-
-	my $rv = $cfg->{MAIN}{'radio-v'} // "b";
-	$templateout->param("ATTR_RADIO_V_A", $rv eq "a" ? 'checked="checked"' : '');
-	$templateout->param("ATTR_RADIO_V_B", $rv eq "b" ? 'checked="checked"' : '');
-	$templateout->param("ATTR_RADIO_V_C", $rv eq "c" ? 'checked="checked"' : '');
-
-	my $rh = $cfg->{MAIN}{'radio-h'} // "0";
-	$templateout->param("ATTR_RADIO_H_1", $rh eq "1" ? 'checked="checked"' : '');
-	$templateout->param("ATTR_RADIO_H_0", $rh eq "0" ? 'checked="checked"' : '');
-
-	my $sel = $cfg->{MAIN}{select1} // "0";
-	$templateout->param("ATTR_SELECT1_0", $sel eq "0" ? 'selected="selected"' : '');
-	$templateout->param("ATTR_SELECT1_1", $sel eq "1" ? 'selected="selected"' : '');
-	$templateout->param("ATTR_SELECT1_2", $sel eq "2" ? 'selected="selected"' : '');
 
 	return();
 }
