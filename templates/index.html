@@ -1,6 +1,25 @@
 <h2><TMPL_VAR BASIC.HEADING_BASICSETTINGS></h2>
 <p><TMPL_VAR BASIC.SAMPLEPLUGIN_HINT></p>
 
+<!-- Intro paragraph: explains what this page does and how saving/loading works -->
+<p>
+    This page demonstrates the use of Perl and jQuery Mobile.<br>
+    The <strong>Save</strong> button submits the form data via
+    <a href="https://wiki.loxberry.de/entwickler/web_ui_development_in_loxberry/web_forms_client_server_communication_ajaxgenericphp"
+       target="_blank">ajax-generic.php</a>
+    and saves it to the config file
+    <code><TMPL_VAR AJAXCFGFILE></code>.<br>
+    When the page loads, the data is read back from the config file and
+    pre-filled via JavaScript.
+</p>
+
+<!-- Save button — calls saveConfig() which posts all form values via ajax-generic.php -->
+<a href="#" data-role="button" data-inline="true" data-icon="check"
+   onclick="saveConfig(); return false;">Save</a>
+
+<!-- Status message shown briefly after save (success = green, error = red) -->
+<div id="save-status" style="display:none; padding:0.8em 1em; margin:0.5em 0; border-radius:4px;"></div>
+
 <!--
     FORM FIELDS — SAVED TO CONFIG
     ==============================
@@ -158,9 +177,6 @@
 <div data-role="fieldcontain">
     <input type="submit" data-role="button" data-icon="check" data-inline="true" value="Save">
 </div>
-
-<!-- Statusmeldung — wird nach dem Speichern kurz eingeblendet -->
-<div id="save-status" style="display:none; padding:0.8em 1em; margin:0.5em 0; border-radius:4px;"></div>
 
 </form>
 
