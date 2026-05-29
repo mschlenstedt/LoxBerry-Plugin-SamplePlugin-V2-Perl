@@ -13,9 +13,9 @@
 *.html  text eol=lf
 *.dat   text eol=lf
 
-# Files without extension (daemon, uninstall, sudoers, apt)
+# Files without extension and cron scripts
 daemon/daemon       text eol=lf
 uninstall/uninstall text eol=lf
 sudoers/sudoers     text eol=lf
 dpkg/apt            text eol=lf
-cron/crontab        text eol=lf
+cron/*              text eol=lf
