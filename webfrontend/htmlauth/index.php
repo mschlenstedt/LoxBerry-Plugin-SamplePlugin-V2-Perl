@@ -25,7 +25,8 @@ $form = isset($_REQUEST['form']) ? $_REQUEST['form'] : 'main';
 $L = LBSystem::readlanguage("language.ini");
 
 // Load plugin config
-$cfg = json_decode(file_get_contents("$lbpconfigdir/pluginconfig.json"));
+// Note: use $plugincfg, not $cfg — $cfg is reserved by loxberry_system.php for general.json
+$plugincfg = json_decode(file_get_contents("$lbpconfigdir/pluginconfig.json"));
 
 ##########################################################################
 # Navbar
@@ -81,7 +82,7 @@ exit;
 
 function form_main()
 {
-	global $L, $cfg, $lbptemplatedir;
+	global $L, $plugincfg, $lbptemplatedir;
 	include "$lbptemplatedir/index_php.html";
 }
 
