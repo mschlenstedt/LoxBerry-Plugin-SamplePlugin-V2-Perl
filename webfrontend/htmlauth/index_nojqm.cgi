@@ -1,19 +1,5 @@
 #!/usr/bin/perl
 
-# Copyright 2024 Michael Schlenstedt, michael@loxberry.de
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-
 # This is the nojqm variant of index.cgi.
 # jQuery Mobile is NOT loaded. The page uses the LoxBerry Design System
 # (lb-* CSS classes) instead. Pass "nojqm" as the 4th argument to lbheader().
@@ -35,26 +21,18 @@ use strict;
 # Variables
 ##########################################################################
 
-my $log;
-
-# Read form parameters
 my $cgi = CGI->new;
-my $q = $cgi->Vars;
+my $q   = $cgi->Vars;
 
 my $version = LoxBerry::System::pluginversion();
 my $template;
-my $templatefile;
 my $templateout;
-
-# Language phrases
 my %L;
 
 # Load plugin config
-my $cfgfile = "$lbpconfigdir/pluginconfig.json";
 my $jsonobj = LoxBerry::JSON->new();
-my $cfg = $jsonobj->open(filename => $cfgfile, readonly => 1);
+my $cfg = $jsonobj->open(filename => "$lbpconfigdir/pluginconfig.json", readonly => 1);
 
-# Default form
 $q->{form} = "main" if !$q->{form};
 
 ##########################################################################
@@ -62,18 +40,15 @@ $q->{form} = "main" if !$q->{form};
 ##########################################################################
 
 if ($q->{form} eq "main") {
-	$templatefile = "$lbptemplatedir/index.html";
-	$template = LoxBerry::System::read_file($templatefile);
+	$template = LoxBerry::System::read_file("$lbptemplatedir/index_nojqm.html");
 	&form_main();
 }
 elsif ($q->{form} eq "logs") {
-	$templatefile = "$lbptemplatedir/index.html";
-	$template = LoxBerry::System::read_file($templatefile);
+	$template = LoxBerry::System::read_file("$lbptemplatedir/logs.html");
 	&form_logs();
 }
 else {
-	$templatefile = "$lbptemplatedir/index.html";
-	$template = LoxBerry::System::read_file($templatefile);
+	$template = LoxBerry::System::read_file("$lbptemplatedir/index_nojqm.html");
 	&form_main();
 }
 
@@ -81,7 +56,7 @@ else {
 exit;
 
 ##########################################################################
-# Form: Main settings
+# Forms
 ##########################################################################
 
 sub form_main
@@ -89,10 +64,6 @@ sub form_main
 	&preparetemplate();
 	return();
 }
-
-##########################################################################
-# Form: Log viewer
-##########################################################################
 
 sub form_logs
 {
@@ -109,20 +80,27 @@ sub preparetemplate
 {
 	$templateout = HTML::Template->new_scalar_ref(
 		\$template,
-		global_vars => 1,
+		global_vars       => 1,
 		loop_context_vars => 1,
 		die_on_bad_params => 0,
 	);
 
-	# Language file
 	%L = LoxBerry::System::readlanguage($templateout, "language.ini");
 
-	# Navbar
 	our %navbar;
 
-	$navbar{10}{Name}   = "$L{'BASIC.LABEL_MAIN'}";
-	$navbar{10}{URL}    = 'index_nojqm.cgi?form=main';
-	$navbar{10}{active} = 1 if $q->{form} eq "main";
+	$navbar{10}{Name}   = "$L{'BASIC.LABEL_PERL_JQM'}";
+	$navbar{10}{URL}    = 'index.cgi';
+
+	$navbar{20}{Name}   = "$L{'BASIC.LABEL_PERL_NOJQM'}";
+	$navbar{20}{URL}    = 'index_nojqm.cgi';
+	$navbar{20}{active} = 1 if $q->{form} eq "main";
+
+	$navbar{30}{Name}   = "$L{'BASIC.LABEL_PHP_JQM'}";
+	$navbar{30}{URL}    = 'index_php.php';
+
+	$navbar{40}{Name}   = "$L{'BASIC.LABEL_PHP_NOJQM'}";
+	$navbar{40}{URL}    = 'index_php_nojqm.php';
 
 	$navbar{90}{Name}   = "$L{'BASIC.LABEL_LOGS'}";
 	$navbar{90}{URL}    = 'index_nojqm.cgi?form=logs';
@@ -132,7 +110,7 @@ sub preparetemplate
 }
 
 ##########################################################################
-# Print template with LoxBerry header and footer (nojqm mode)
+# Print page
 ##########################################################################
 
 sub printtemplate

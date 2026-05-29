@@ -1,19 +1,5 @@
 <?php
 
-# Copyright 2024 Michael Schlenstedt, michael@loxberry.de
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-
 ##########################################################################
 # Modules / Includes
 ##########################################################################
@@ -41,9 +27,18 @@ $cfg = LBSystem::lbfromjson("$lbpconfigdir/pluginconfig.json");
 # Navbar
 ##########################################################################
 
-$navbar[10]['Name']   = $L['BASIC.LABEL_MAIN'];
-$navbar[10]['URL']    = 'index_php.php?form=main';
-$navbar[10]['active'] = ($form === 'main');
+$navbar[10]['Name']   = $L['BASIC.LABEL_PERL_JQM'];
+$navbar[10]['URL']    = 'index.cgi';
+
+$navbar[20]['Name']   = $L['BASIC.LABEL_PERL_NOJQM'];
+$navbar[20]['URL']    = 'index_nojqm.cgi';
+
+$navbar[30]['Name']   = $L['BASIC.LABEL_PHP_JQM'];
+$navbar[30]['URL']    = 'index_php.php?form=main';
+$navbar[30]['active'] = ($form === 'main');
+
+$navbar[40]['Name']   = $L['BASIC.LABEL_PHP_NOJQM'];
+$navbar[40]['URL']    = 'index_php_nojqm.php';
 
 $navbar[90]['Name']   = $L['BASIC.LABEL_LOGS'];
 $navbar[90]['URL']    = 'index_php.php?form=logs';
@@ -81,7 +76,7 @@ exit;
 function form_main()
 {
 	global $L, $cfg;
-	include "$lbptemplatedir/index.html";
+	include "$lbptemplatedir/index_php.html";
 }
 
 ##########################################################################
