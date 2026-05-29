@@ -1,6 +1,148 @@
 <h2><TMPL_VAR BASIC.HEADING_BASICSETTINGS></h2>
 
 <p><TMPL_VAR BASIC.SAMPLEPLUGIN_HINT></p>
-<p><TMPL_VAR BASIC.SAMPLEPLUGIN_BESTPRACTISE></p>
 
-<p><i><TMPL_VAR FOOTER.GREETING></i></p>
+<form method="post" action="index.cgi">
+<input type="hidden" name="form" value="main">
+
+<!-- ============================================================
+     BUTTON
+     Docs: https://demos.jquerymobile.com/1.4.5/button-markup/
+
+     An anchor or <input type="submit"> styled as a button via
+     data-role="button". data-inline="true" keeps the button at
+     its natural width instead of stretching it full-width.
+     data-icon adds one of the built-in icon sprites.
+     ============================================================ -->
+<div data-role="fieldcontain">
+    <a href="#" data-role="button" data-inline="true" data-icon="check">Action</a>
+</div>
+
+
+<!-- ============================================================
+     CHECKBOX
+     Docs: https://demos.jquerymobile.com/1.4.5/checkboxradio/
+
+     A standard checkbox enhanced by jQuery Mobile. The <label>
+     must reference the input's id via the "for" attribute — jQM
+     hides the raw input and styles the label as the visible widget.
+     Wrap in a fieldset with data-role="controlgroup" for the
+     standard bordered appearance.
+     ============================================================ -->
+<div data-role="fieldcontain">
+    <fieldset data-role="controlgroup">
+        <legend>Checkbox</legend>
+        <input type="checkbox" name="checkbox1" id="checkbox1" value="1">
+        <label for="checkbox1">Enable feature</label>
+    </fieldset>
+</div>
+
+
+<!-- ============================================================
+     CONTROLGROUP
+     Docs: https://demos.jquerymobile.com/1.4.5/controlgroup/
+
+     Visually groups buttons or inputs into a single connected bar.
+     The default is vertical; data-type="horizontal" renders them
+     side by side in a single row. Works with buttons, checkboxes,
+     radio buttons, and selects.
+     ============================================================ -->
+<div data-role="fieldcontain">
+    <div data-role="controlgroup" data-type="horizontal">
+        <a href="#" data-role="button">One</a>
+        <a href="#" data-role="button">Two</a>
+        <a href="#" data-role="button">Three</a>
+    </div>
+</div>
+
+
+<!-- ============================================================
+     FLIPSWITCH
+     Docs: https://demos.jquerymobile.com/1.4.5/flipswitch/
+
+     A checkbox rendered as an on/off toggle switch. Add
+     data-role="flipswitch" to the input; jQuery Mobile handles
+     the rest. Can also be built from a <select> with exactly two
+     options if custom labels (e.g. "Yes"/"No") are needed.
+     ============================================================ -->
+<div data-role="fieldcontain">
+    <label for="flip1">Active:</label>
+    <input type="checkbox" data-role="flipswitch" name="flip1" id="flip1">
+</div>
+
+
+<!-- ============================================================
+     DATEPICKER
+     Docs: https://demos.jquerymobile.com/1.4.5/datepicker/
+
+     jQuery UI Datepicker integrated with jQuery Mobile. Use
+     type="date" for the browser-native mobile date picker (simpler,
+     no extra JS), or type="text" combined with a $().datepicker()
+     call to activate the jQuery UI calendar widget on desktop.
+     ============================================================ -->
+<div data-role="fieldcontain">
+    <label for="date1">Date:</label>
+    <input type="date" name="date1" id="date1">
+</div>
+
+
+<!-- ============================================================
+     RANGESLIDER
+     Docs: https://demos.jquerymobile.com/1.4.5/rangeslider/
+
+     Two range inputs inside a wrapper with data-role="rangeslider"
+     define a lower and upper bound. Both inputs must share the
+     same min and max attributes. The first input sets the lower
+     handle, the second sets the upper handle.
+     ============================================================ -->
+<div data-role="fieldcontain">
+    <div data-role="rangeslider">
+        <label for="range-min">Minimum:</label>
+        <input type="range" name="range-min" id="range-min" min="0" max="100" value="20">
+        <label for="range-max">Maximum:</label>
+        <input type="range" name="range-max" id="range-max" min="0" max="100" value="80">
+    </div>
+</div>
+
+
+<!-- ============================================================
+     SELECTMENU
+     Docs: https://demos.jquerymobile.com/1.4.5/selectmenu/
+
+     A standard <select> enhanced by jQuery Mobile into a styled
+     button that opens a native or custom overlay list. No extra
+     attributes are needed — enhancement happens automatically.
+     Use data-native-menu="false" to force the custom jQM overlay
+     instead of the device's native picker.
+     ============================================================ -->
+<div data-role="fieldcontain">
+    <label for="select1">Mode:</label>
+    <select name="select1" id="select1">
+        <option value="0">Off</option>
+        <option value="1">On</option>
+        <option value="2">Auto</option>
+    </select>
+</div>
+
+
+<!-- ============================================================
+     SLIDER
+     Docs: https://demos.jquerymobile.com/1.4.5/slider/
+
+     A single-handle range slider from a standard <input type="range">.
+     min, max and value define the allowed range and the default
+     position. data-highlight="true" fills the track from the left
+     edge up to the thumb for visual feedback.
+     ============================================================ -->
+<div data-role="fieldcontain">
+    <label for="slider1">Level:</label>
+    <input type="range" name="slider1" id="slider1" min="0" max="100" value="50" data-highlight="true">
+</div>
+
+
+<!-- Submit button -->
+<div data-role="fieldcontain">
+    <input type="submit" data-role="button" data-icon="check" data-inline="true" value="Save">
+</div>
+
+</form>
