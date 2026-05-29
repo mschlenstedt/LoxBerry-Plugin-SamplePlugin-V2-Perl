@@ -25,7 +25,7 @@ $form = isset($_REQUEST['form']) ? $_REQUEST['form'] : 'main';
 $L = LBSystem::readlanguage("language.ini");
 
 // Load plugin config
-$cfg = LBSystem::lbfromjson("$lbpconfigdir/pluginconfig.json");
+$cfg = json_decode(file_get_contents("$lbpconfigdir/pluginconfig.json"));
 
 ##########################################################################
 # Navbar
