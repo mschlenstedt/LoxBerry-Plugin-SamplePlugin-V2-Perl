@@ -1,7 +1,6 @@
 # dpkg/apt12 - Packages to install via apt-get on Debian 12 (Bookworm) only.
 #
-# This file is used instead of dpkg/apt when LoxBerry runs on Debian 12 (Bookworm),
-# which corresponds to Raspberry Pi OS Bookworm / LoxBerry 4.x.
+# This file is used instead of dpkg/apt when LoxBerry runs on Debian 12 (Bookworm).
 #
 # Use this when a package has a different name or is only available in Bookworm.
 # If this file exists, dpkg/apt is NOT used on Debian 12 systems.

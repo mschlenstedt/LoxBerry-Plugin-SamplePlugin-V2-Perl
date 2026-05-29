@@ -1,7 +1,6 @@
 # dpkg/apt11 - Packages to install via apt-get on Debian 11 (Bullseye) only.
 #
-# This file is used instead of dpkg/apt when LoxBerry runs on Debian 11 (Bullseye),
-# which corresponds to Raspberry Pi OS Bullseye / LoxBerry 3.x.
+# This file is used instead of dpkg/apt when LoxBerry runs on Debian 11 (Bullseye).
 #
 # Use this when a package has a different name or is only available in Bullseye.
 # If this file exists, dpkg/apt is NOT used on Debian 11 systems.
