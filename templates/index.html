@@ -1,21 +1,34 @@
 <h2><TMPL_VAR BASIC.HEADING_BASICSETTINGS></h2>
 <p><TMPL_VAR BASIC.SAMPLEPLUGIN_HINT></p>
 
-<form method="post" action="index.cgi">
-<input type="hidden" name="form" value="main">
+<!--
+    FORM FIELDS — SAVED TO CONFIG
+    ==============================
+    All fields below are saved to pluginconfig.json via ajax-generic.php
+    when the user clicks "Save".  On page load, index.cgi reads the stored
+    values and pre-fills each field using TMPL_VAR / TMPL_IF.
+
+    ajax-generic.php docs:
+    https://wiki.loxberry.de/entwickler/web_ui_development_in_loxberry/web_forms_client_server_communication_ajaxgenericphp
+-->
+
+<!-- onsubmit="…return false" prevents a traditional page-reload submit;
+     saveConfig() handles the AJAX save instead. -->
+<form id="mainform" onsubmit="saveConfig(); return false;">
 
 
 <!-- ============================================================ TEXT INPUT -->
 <h3>Text Input</h3>
 <p>Einfaches einzeiliges Texteingabefeld. jQuery Mobile styled es automatisch auf Touch-Größe.</p>
 <p><a href="https://demos.jquerymobile.com/1.4.5/textinput/" target="_blank">jQuery Mobile Docs: Text Input</a></p>
+<!-- value="<TMPL_VAR CFG_TEXT1>" pre-fills this field with the stored config value -->
 <div data-role="fieldcontain">
     <label for="text1">Name:</label>
-    <input type="text" name="text1" id="text1" placeholder="Enter text">
+    <input type="text" name="text1" id="text1" value="<TMPL_VAR CFG_TEXT1>" placeholder="Enter text">
 </div>
 
 
-<!-- ============================================================ BUTTON -->
+<!-- ============================================================ BUTTON (demo only — not saved) -->
 <h3>Button</h3>
 <p>Ein Link oder Submit-Input wird per <code>data-role="button"</code> zum Button. <code>data-inline="true"</code> verhindert die Vollbreite, <code>data-icon</code> setzt ein Icon.</p>
 <p><a href="https://demos.jquerymobile.com/1.4.5/button-markup/" target="_blank">jQuery Mobile Docs: Button Markup</a></p>
@@ -28,10 +41,11 @@
 <h3>Checkbox</h3>
 <p>Checkbox in einem <code>fieldset</code> mit <code>data-role="controlgroup"</code>. Das <code>label</code> muss per <code>for</code>-Attribut auf die Input-ID zeigen — jQM versteckt den nativen Input und stylt das Label.</p>
 <p><a href="https://demos.jquerymobile.com/1.4.5/checkboxradio/" target="_blank">jQuery Mobile Docs: Checkbox &amp; Radio</a></p>
+<!-- <TMPL_IF CFG_CHECKBOX1>checked="checked"</TMPL_IF> adds checked only when the stored value is "1" -->
 <div data-role="fieldcontain">
     <fieldset data-role="controlgroup">
         <legend>Checkbox</legend>
-        <input type="checkbox" name="checkbox1" id="checkbox1" value="1">
+        <input type="checkbox" name="checkbox1" id="checkbox1" value="1"<TMPL_IF CFG_CHECKBOX1> checked="checked"</TMPL_IF>>
         <label for="checkbox1">Enable feature</label>
     </fieldset>
 </div>
@@ -41,14 +55,15 @@
 <h3>Radio Buttons (vertikal)</h3>
 <p>Mehrere Radio-Inputs in einer <code>controlgroup</code> — standardmäßig vertikal gestapelt. Nur ein Wert der Gruppe kann gleichzeitig ausgewählt sein.</p>
 <p><a href="https://demos.jquerymobile.com/1.4.5/checkboxradio/" target="_blank">jQuery Mobile Docs: Checkbox &amp; Radio</a></p>
+<!-- TMPL_IF sets checked="checked" on whichever option matches the stored value -->
 <div data-role="fieldcontain">
     <fieldset data-role="controlgroup">
         <legend>Choose one:</legend>
-        <input type="radio" name="radio-v" id="radio-v1" value="a">
+        <input type="radio" name="radio-v" id="radio-v1" value="a"<TMPL_IF CFG_RADIO_V_A> checked="checked"</TMPL_IF>>
         <label for="radio-v1">Option A</label>
-        <input type="radio" name="radio-v" id="radio-v2" value="b" checked>
+        <input type="radio" name="radio-v" id="radio-v2" value="b"<TMPL_IF CFG_RADIO_V_B> checked="checked"</TMPL_IF>>
         <label for="radio-v2">Option B</label>
-        <input type="radio" name="radio-v" id="radio-v3" value="c">
+        <input type="radio" name="radio-v" id="radio-v3" value="c"<TMPL_IF CFG_RADIO_V_C> checked="checked"</TMPL_IF>>
         <label for="radio-v3">Option C</label>
     </fieldset>
 </div>
@@ -61,15 +76,15 @@
 <div data-role="fieldcontain">
     <fieldset data-role="controlgroup" data-type="horizontal">
         <legend>Choose one:</legend>
-        <input type="radio" name="radio-h" id="radio-h1" value="1">
+        <input type="radio" name="radio-h" id="radio-h1" value="1"<TMPL_IF CFG_RADIO_H_1> checked="checked"</TMPL_IF>>
         <label for="radio-h1">Yes</label>
-        <input type="radio" name="radio-h" id="radio-h2" value="0" checked>
+        <input type="radio" name="radio-h" id="radio-h2" value="0"<TMPL_IF CFG_RADIO_H_0> checked="checked"</TMPL_IF>>
         <label for="radio-h2">No</label>
     </fieldset>
 </div>
 
 
-<!-- ============================================================ CONTROLGROUP (HORIZONTAL) -->
+<!-- ============================================================ CONTROLGROUP (demo only — not saved) -->
 <h3>Controlgroup</h3>
 <p>Verbindet Buttons oder Inputs visuell zu einer Leiste. <code>data-type="horizontal"</code> reiht die Elemente nebeneinander; erster und letzter Button erhalten abgerundete Ecken.</p>
 <p><a href="https://demos.jquerymobile.com/1.4.5/controlgroup/" target="_blank">jQuery Mobile Docs: Controlgroup</a></p>
@@ -88,20 +103,20 @@
 <p><a href="https://demos.jquerymobile.com/1.4.5/flipswitch/" target="_blank">jQuery Mobile Docs: Flipswitch</a></p>
 <div data-role="fieldcontain">
     <label for="flip1">Active:</label>
-    <input type="checkbox" data-role="flipswitch" name="flip1" id="flip1">
+    <input type="checkbox" data-role="flipswitch" name="flip1" id="flip1"<TMPL_IF CFG_FLIP1> checked="checked"</TMPL_IF>>
 </div>
 
 
-<!-- ============================================================ DATEPICKER
-     type="text" + jQuery UI Datepicker. type="date" ist browserabhängig
-     und funktioniert nicht zuverlässig. Das Skript am Ende des Templates
-     initialisiert $.datepicker() wenn jQuery UI geladen ist.         -->
+<!-- ============================================================ DATEPICKER -->
+<!-- type="text" + jQuery UI Datepicker; type="date" is browser-dependent.
+     The <script> block at the bottom of this file initializes the calendar. -->
 <h3>Datepicker</h3>
-<p>Datumsauswahl per jQuery UI Datepicker, der nahtlos in jQuery Mobile eingebettet wird. Das Eingabefeld ist <code>type="text"</code>; der Kalender wird per JavaScript initialisiert.</p>
+<p>Datumsauswahl per jQuery UI Datepicker. Das Eingabefeld ist <code>type="text"</code>; der Kalender wird per JavaScript initialisiert.</p>
 <p><a href="https://demos.jquerymobile.com/1.4.5/datepicker/" target="_blank">jQuery Mobile Docs: Datepicker</a></p>
+<!-- value="<TMPL_VAR CFG_DATE1>" pre-fills the stored date string (format YYYY-MM-DD) -->
 <div data-role="fieldcontain">
     <label for="date1">Date:</label>
-    <input type="text" name="date1" id="date1" placeholder="YYYY-MM-DD">
+    <input type="text" name="date1" id="date1" value="<TMPL_VAR CFG_DATE1>" placeholder="YYYY-MM-DD">
 </div>
 
 
@@ -109,12 +124,13 @@
 <h3>Rangeslider</h3>
 <p>Zwei Range-Inputs in <code>data-role="rangeslider"</code> definieren Unter- und Obergrenze. Beide müssen dieselben <code>min</code>/<code>max</code>-Werte teilen.</p>
 <p><a href="https://demos.jquerymobile.com/1.4.5/rangeslider/" target="_blank">jQuery Mobile Docs: Rangeslider</a></p>
+<!-- value="<TMPL_VAR ...>" pre-fills both handles with the stored values -->
 <div data-role="fieldcontain">
     <div data-role="rangeslider">
         <label for="range-min">Minimum:</label>
-        <input type="range" name="range-min" id="range-min" min="0" max="100" value="20">
+        <input type="range" name="range-min" id="range-min" min="0" max="100" value="<TMPL_VAR CFG_RANGE_MIN>">
         <label for="range-max">Maximum:</label>
-        <input type="range" name="range-max" id="range-max" min="0" max="100" value="80">
+        <input type="range" name="range-max" id="range-max" min="0" max="100" value="<TMPL_VAR CFG_RANGE_MAX>">
     </div>
 </div>
 
@@ -123,12 +139,13 @@
 <h3>Selectmenu</h3>
 <p>Ein normales <code>&lt;select&gt;</code> wird automatisch von jQuery Mobile zu einem gestylten Dropdown-Button umgewandelt — kein zusätzliches Attribut nötig.</p>
 <p><a href="https://demos.jquerymobile.com/1.4.5/selectmenu/" target="_blank">jQuery Mobile Docs: Selectmenu</a></p>
+<!-- <TMPL_IF CFG_SELECT1_x>selected="selected"</TMPL_IF> marks the stored option -->
 <div data-role="fieldcontain">
     <label for="select1">Mode:</label>
     <select name="select1" id="select1">
-        <option value="0">Off</option>
-        <option value="1">On</option>
-        <option value="2">Auto</option>
+        <option value="0"<TMPL_IF CFG_SELECT1_0> selected="selected"</TMPL_IF>>Off</option>
+        <option value="1"<TMPL_IF CFG_SELECT1_1> selected="selected"</TMPL_IF>>On</option>
+        <option value="2"<TMPL_IF CFG_SELECT1_2> selected="selected"</TMPL_IF>>Auto</option>
     </select>
 </div>
 
@@ -137,18 +154,31 @@
 <h3>Slider</h3>
 <p>Einhändiger Schieberegler aus <code>&lt;input type="range"&gt;</code>. <code>data-highlight="true"</code> füllt die Spur vom linken Rand bis zum Griff.</p>
 <p><a href="https://demos.jquerymobile.com/1.4.5/slider/" target="_blank">jQuery Mobile Docs: Slider</a></p>
+<!-- value="<TMPL_VAR CFG_SLIDER1>" pre-fills the slider position -->
 <div data-role="fieldcontain">
     <label for="slider1">Level:</label>
-    <input type="range" name="slider1" id="slider1" min="0" max="100" value="50" data-highlight="true">
+    <input type="range" name="slider1" id="slider1" min="0" max="100" value="<TMPL_VAR CFG_SLIDER1>" data-highlight="true">
 </div>
 
 
-<!-- Submit -->
+<!-- ============================================================ SAVE BUTTON -->
+<!-- type="submit" triggers the form's onsubmit handler which calls saveConfig() -->
 <div data-role="fieldcontain">
     <input type="submit" data-role="button" data-icon="check" data-inline="true" value="Save">
 </div>
 
+<!-- Status message — shown briefly after save, hidden by default -->
+<div id="save-status" style="display:none; padding:0.8em 1em; margin:0.5em 0; border-radius:4px;"></div>
+
 </form>
+
+
+<!-- ============================================================
+     UI DEMO WIDGETS (not saved to config)
+     The widgets below demonstrate jQuery Mobile UI components
+     that are not form fields and therefore not part of the
+     save/load cycle.
+     ============================================================ -->
 
 
 <!-- ============================================================ FILTERABLE -->
@@ -192,7 +222,7 @@
 <a href="#popup-demo" data-rel="popup" data-role="button" data-inline="true"
    data-transition="pop" data-icon="info">Open Popup</a>
 
-<!-- Popup element — place anywhere on the page, outside the form -->
+<!-- The popup div can be placed anywhere on the page (outside the form) -->
 <div data-role="popup" id="popup-demo" data-overlay-theme="b" data-theme="a">
     <div data-role="header">
         <h1>Popup Title</h1>
@@ -204,11 +234,97 @@
 </div>
 
 
-<!-- jQuery UI Datepicker init — runs after page is ready -->
+<!-- ============================================================
+     JAVASCRIPT
+     ============================================================ -->
 <script>
+
+// ----------------------------------------------------------------
+// jQuery UI Datepicker initialization
+// Runs after the page DOM is ready.
+// We check if $.datepicker exists before calling it, so the page
+// does not break if jQuery UI is not loaded.
+// ----------------------------------------------------------------
 $(function() {
     if (typeof $.datepicker !== "undefined") {
         $("#date1").datepicker({ dateFormat: "yy-mm-dd" });
     }
 });
+
+
+// ----------------------------------------------------------------
+// saveConfig() — collect all form field values and write them to
+// pluginconfig.json via ajax-generic.php.
+//
+// ajax-generic.php accepts a POST request with:
+//   GET parameter  ?write   — tells it to write (not read)
+//   GET parameter  file=... — the config file path to write
+//   POST body               — JSON object with the data to save
+//
+// The file path uses LBPCONFIG as a placeholder.  ajax-generic.php
+// resolves it to $LBHOMEDIR/config/plugins, so
+//   LBPCONFIG/sampleplugin_folder/pluginconfig.json
+// is the same as $lbpconfigdir/pluginconfig.json on the server.
+//
+// The data is deep-merged with the existing JSON file, so only the
+// keys we send are updated — other keys are preserved.
+//
+// ajax-generic.php docs:
+//   https://wiki.loxberry.de/entwickler/web_ui_development_in_loxberry/web_forms_client_server_communication_ajaxgenericphp
+// ----------------------------------------------------------------
+function saveConfig() {
+
+    // Collect current form field values.
+    // The keys here must match the keys in pluginconfig.json (section MAIN).
+    var data = {
+        MAIN: {
+            "text1":     $("#text1").val(),
+            "checkbox1": $("#checkbox1").is(":checked") ? "1" : "0",
+            "radio-v":   $("input[name='radio-v']:checked").val() || "",
+            "radio-h":   $("input[name='radio-h']:checked").val() || "",
+            "flip1":     $("#flip1").is(":checked") ? "1" : "0",
+            "date1":     $("#date1").val(),
+            "range-min": $("#range-min").val(),
+            "range-max": $("#range-max").val(),
+            "select1":   $("#select1").val(),
+            "slider1":   $("#slider1").val()
+        }
+    };
+
+    // The config file path is injected by index.cgi via <TMPL_VAR AJAXCFGFILE>.
+    // encodeURIComponent() makes the path safe to use as a URL parameter.
+    var cfgFile = "<TMPL_VAR AJAXCFGFILE>";
+
+    $.ajax({
+        url:         "/admin/system/ajax/ajax-generic.php?write&file=" + encodeURIComponent(cfgFile),
+        type:        "POST",
+        contentType: "application/json",   // tell ajax-generic.php we're sending JSON
+        data:        JSON.stringify(data), // convert JS object to JSON string
+        success: function(response) {
+            showStatus("&#10003; Saved successfully", false);
+        },
+        error: function(xhr, status, error) {
+            // xhr.status holds the HTTP status code (e.g. 403, 500)
+            showStatus("&#10007; Error " + xhr.status + ": " + error, true);
+        }
+    });
+}
+
+
+// ----------------------------------------------------------------
+// showStatus() — briefly display a success or error message below
+// the Save button.  The message fades out after 2 seconds.
+// ----------------------------------------------------------------
+function showStatus(message, isError) {
+    var $s = $("#save-status");
+    $s.html(message)
+      .css({
+          "background-color": isError ? "#f8d7da" : "#d4edda",
+          "color":            isError ? "#721c24" : "#155724",
+          "border":           isError ? "1px solid #f5c6cb" : "1px solid #c3e6cb"
+      })
+      .show();
+    setTimeout(function() { $s.fadeOut(500); }, 2000);
+}
+
 </script>

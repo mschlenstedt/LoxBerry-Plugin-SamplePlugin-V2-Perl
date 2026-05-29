@@ -1,20 +1,17 @@
 {
-	"_comment": "Plugin configuration file - JSON format. Read/write with LoxBerry::JSON (Perl) or lbfromjson/lbtojson (PHP).",
-	"_comment_replacements": "The placeholder REPLACELBPPLUGINDIR is replaced by the installer with the actual plugin folder name. Other available placeholders: REPLACELBPCGIDIR, REPLACELBPHTMLDIR, REPLACELBPTEMPLATEDIR, REPLACELBPDATADIR, REPLACELBPCONFIGDIR, REPLACELBPLOGDIR, REPLACELBPBINDIR, REPLACELBPSBINDIR.",
-	"Main": {
-		"Subfolder": "REPLACELBPPLUGINDIR",
-		"SomeOtherOption": false
-	},
-	"Section1": {
-		"Name": "This is a Name from the first Section",
-		"Id": 10
-	},
-	"Section2": {
-		"Name": "This is a Name from the second Section",
-		"Id": 20
-	},
-	"Section3": {
-		"Name": "This is a Name from the third Section",
-		"Id": 30
+	"_comment": "Plugin configuration file. Read/write this file with LoxBerry::JSON (Perl) or lbfromjson/lbtojson (PHP). The web UI uses ajax-generic.php to read and write values without a page reload.",
+	"_comment_placeholders": "REPLACELBPPLUGINDIR and similar placeholders below are replaced by the LoxBerry installer with the actual plugin folder name.",
+	"MAIN": {
+		"_comment": "Default values for the index.cgi demo form. These are loaded on page load and saved via ajax-generic.php.",
+		"text1":     "Hello LoxBerry",
+		"checkbox1": "0",
+		"radio-v":   "b",
+		"radio-h":   "0",
+		"flip1":     "0",
+		"date1":     "",
+		"range-min": "20",
+		"range-max": "80",
+		"select1":   "0",
+		"slider1":   "50"
 	}
 }
