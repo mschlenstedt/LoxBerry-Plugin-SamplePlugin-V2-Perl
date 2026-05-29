@@ -1,0 +1,8 @@
+#!/bin/bash
+
+# cron/cron.03min - Script executed every 3 minutes by LoxBerry's cron system.
+#
+# Installed to $LBHOMEDIR/system/cron/cron.03min/<NAME> during plugin installation.
+# Runs as user "loxberry".
+
+# Add your every-3-minutes task here.

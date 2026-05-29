@@ -1,0 +1,8 @@
+#!/bin/bash
+
+# cron/cron.15min - Script executed every 15 minutes by LoxBerry's cron system.
+#
+# Installed to $LBHOMEDIR/system/cron/cron.15min/<NAME> during plugin installation.
+# Runs as user "loxberry".
+
+# Add your every-15-minutes task here.

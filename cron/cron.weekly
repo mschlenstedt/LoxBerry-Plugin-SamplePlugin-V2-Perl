@@ -1,0 +1,8 @@
+#!/bin/bash
+
+# cron/cron.weekly - Script executed once per week by LoxBerry's cron system.
+#
+# Installed to $LBHOMEDIR/system/cron/cron.weekly/<NAME> during plugin installation.
+# Runs as user "loxberry".
+
+# Add your weekly task here.

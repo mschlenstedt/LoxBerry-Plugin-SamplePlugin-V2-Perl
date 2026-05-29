@@ -1,0 +1,13 @@
+#!/bin/bash
+
+# cron/cron.reboot - Script executed once at every system reboot.
+# Requires LoxBerry 2.0 or newer.
+#
+# Installed to $LBHOMEDIR/system/cron/cron.reboot/<NAME> during plugin installation.
+# Runs as user "loxberry".
+#
+# Use this for tasks that must run after every boot but do not require root
+# privileges (e.g. starting a user-space background process, initialising a
+# state file). For root-level boot tasks use daemon/daemon instead.
+
+# Add your at-reboot task here.

@@ -1,0 +1,10 @@
+#!/bin/bash
+
+# cron/cron.01min - Script executed every minute by LoxBerry's cron system.
+#
+# Installed to $LBHOMEDIR/system/cron/cron.01min/<NAME> during plugin installation.
+# Runs as user "loxberry".
+#
+# Use with care - a script running every minute can cause significant system load.
+
+# Add your per-minute task here.
