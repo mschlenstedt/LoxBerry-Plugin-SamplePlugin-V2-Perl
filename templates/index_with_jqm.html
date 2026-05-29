@@ -127,18 +127,6 @@
 </div>
 
 
-<!-- ============================================================ DATEPICKER -->
-<!-- type="text" + jQuery UI Datepicker; type="date" is browser-dependent.
-     The script block below initializes the calendar via $.datepicker(). -->
-<h3><TMPL_VAR BASIC.H_DATEPICKER></h3>
-<p><TMPL_VAR BASIC.DESC_DATEPICKER></p>
-<p><a href="https://demos.jquerymobile.com/1.4.5/datepicker/" target="_blank">jQuery Mobile Docs: Datepicker</a></p>
-<div data-role="fieldcontain">
-    <label for="date1"><TMPL_VAR BASIC.LBL_DATE></label>
-    <input type="text" name="date1" id="date1" placeholder="<TMPL_VAR BASIC.PH_DATE>">
-</div>
-
-
 <!-- ============================================================ RANGESLIDER -->
 <h3><TMPL_VAR BASIC.H_RANGESLIDER></h3>
 <p><TMPL_VAR BASIC.DESC_RANGESLIDER></p>
@@ -306,9 +294,6 @@ function loadConfig() {
                 .prop("checked", cfg.flip1 === "1")
                 .flipswitch("refresh");
 
-            // Datepicker — just set the text value
-            $("#date1").val(cfg.date1 || "");
-
             // Rangeslider — set both values, then refresh the widget
             if (cfg["range-min"] !== undefined) { $("#range-min").val(cfg["range-min"]); }
             if (cfg["range-max"] !== undefined) { $("#range-max").val(cfg["range-max"]); }
@@ -349,7 +334,6 @@ function saveConfig() {
             "radio-v":   $("input[name='radio-v']:checked").val() || "",
             "radio-h":   $("input[name='radio-h']:checked").val() || "",
             "flip1":     $("#flip1").is(":checked") ? "1" : "0",
-            "date1":     $("#date1").val(),
             "range-min": $("#range-min").val(),
             "range-max": $("#range-max").val(),
             "select1":   $("#select1").val(),
@@ -395,11 +379,6 @@ function showStatus(message, isError) {
 // (pagecreate event).
 // ----------------------------------------------------------------
 $(document).on("pagecreate", function() {
-
-    // Initialize jQuery UI Datepicker (if available)
-    if (typeof $.datepicker !== "undefined") {
-        $("#date1").datepicker({ dateFormat: "yy-mm-dd" });
-    }
 
     // Load config and pre-fill form fields
     loadConfig();
