@@ -105,7 +105,8 @@ exit;
 
 function form_main()
 {
-	global $L, $plugincfg, $lbptemplatedir;
+	global $L, $plugincfg, $lbptemplatedir, $lbpconfigdir;
+	$ajaxcfgfile = "LBPCONFIG/" . basename($lbpconfigdir) . "/pluginconfig.json";
 	include "$lbptemplatedir/index_php.html";
 }
 

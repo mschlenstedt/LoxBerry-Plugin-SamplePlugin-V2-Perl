@@ -1,6 +1,471 @@
 <div class="lb-content">
-    <h2><?php echo $L['BASIC.HEADING_BASICSETTINGS']; ?></h2>
-    <p><?php echo $L['BASIC.SAMPLEPLUGIN_HINT']; ?></p>
-    <p><?php echo $L['BASIC.SAMPLEPLUGIN_BESTPRACTISE']; ?></p>
-    <p><i><?php echo $L['FOOTER.GREETING']; ?></i></p>
+
+<h2><?php echo $L['BASIC.HEADING_BASICSETTINGS']; ?></h2>
+<p><?php echo $L['BASIC.INTRO_LINE1_DS']; ?></p>
+<p>
+    <?php echo $L['BASIC.INTRO_SAVE_PREFIX']; ?>
+    <a href="https://wiki.loxberry.de/entwickler/web_ui_development_in_loxberry/web_forms_client_server_communication_ajaxgenericphp"
+       target="_blank">ajax-generic.php</a>
+    <?php echo $L['BASIC.INTRO_SAVE_TO']; ?>
+    <code><?php echo $ajaxcfgfile; ?></code>.<br>
+    <?php echo $L['BASIC.INTRO_LOAD']; ?>
+</p>
+
+<!-- Save button — calls saveConfig() which posts all form values via ajax-generic.php -->
+<button class="lb-btn lb-btn-primary" onclick="saveConfig(); return false;"><?php echo $L['BASIC.BTN_SAVE']; ?></button>
+
+<!-- Status message shown briefly after save (success = green, error = red) -->
+<div id="save-status" style="display:none; padding:0.8em 1em; margin:0.5em 0; border-radius:4px;"></div>
+
+<!--
+    FORM FIELDS — SAVED TO CONFIG
+    ==============================
+    All fields are loaded on page load via JavaScript (loadConfig) from
+    pluginconfig.json and saved on Save click via JavaScript (saveConfig)
+    — both via ajax-generic.php.
+-->
+
+<!-- onsubmit="return false" prevents a normal page reload;
+     saveConfig() handles saving via AJAX instead. -->
+<form id="mainform" onsubmit="saveConfig(); return false;">
+
+
+<!-- ============================================================ TEXT INPUT -->
+<h3><?php echo $L['BASIC.H_TEXTINPUT']; ?></h3>
+<p><?php echo $L['BASIC.DESC_TEXTINPUT_DS']; ?></p>
+<p><a href="https://wiki.loxberry.de/entwickler/web_ui_development_in_loxberry/loxberry_design_system" target="_blank">LoxBerry DS Docs</a></p>
+<pre style="background:#f4f4f4;padding:0.8em 1em;border-radius:4px;overflow-x:auto;font-size:0.85em;margin-bottom:0.8em;"><code>&lt;div class="lb-form-row"&gt;
+    &lt;label class="lb-form-label" for="text1"&gt;Label:&lt;/label&gt;
+    &lt;div class="lb-form-field"&gt;
+        &lt;input class="lb-input" type="text" name="text1" id="text1"&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="lb-form-help hint"&gt;Hilfetext&lt;/div&gt;</code></pre>
+<div class="lb-form-row">
+    <label class="lb-form-label" for="text1"><?php echo $L['BASIC.LBL_NAME']; ?></label>
+    <div class="lb-form-field">
+        <input class="lb-input" type="text" name="text1" id="text1" placeholder="<?php echo $L['BASIC.PH_TEXT']; ?>">
+    </div>
+</div>
+
+
+<!-- ============================================================ CHECKBOX -->
+<h3><?php echo $L['BASIC.H_CHECKBOX']; ?></h3>
+<p><?php echo $L['BASIC.DESC_CHECKBOX_DS']; ?></p>
+<pre style="background:#f4f4f4;padding:0.8em 1em;border-radius:4px;overflow-x:auto;font-size:0.85em;margin-bottom:0.8em;"><code>&lt;div class="lb-form-row"&gt;
+    &lt;label class="lb-form-label"&gt;Gruppe:&lt;/label&gt;
+    &lt;div class="lb-form-field"&gt;
+        &lt;input type="checkbox" name="checkbox1" id="checkbox1" value="1"&gt;
+        &lt;label for="checkbox1"&gt;Feature aktivieren&lt;/label&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+<div class="lb-form-row">
+    <label class="lb-form-label"><?php echo $L['BASIC.LBL_CHECKBOX']; ?></label>
+    <div class="lb-form-field">
+        <input type="checkbox" name="checkbox1" id="checkbox1" value="1">
+        <label for="checkbox1"><?php echo $L['BASIC.LBL_ENABLE_FEATURE']; ?></label>
+    </div>
+</div>
+
+
+<!-- ============================================================ RADIO BUTTONS (VERTICAL) -->
+<h3><?php echo $L['BASIC.H_RADIO_V']; ?></h3>
+<p><?php echo $L['BASIC.DESC_RADIO_V_DS']; ?></p>
+<pre style="background:#f4f4f4;padding:0.8em 1em;border-radius:4px;overflow-x:auto;font-size:0.85em;margin-bottom:0.8em;"><code>&lt;div class="lb-form-row"&gt;
+    &lt;label class="lb-form-label"&gt;Option wählen:&lt;/label&gt;
+    &lt;div class="lb-form-field"&gt;
+        &lt;div&gt;&lt;input type="radio" name="radio-v" id="radio-v1" value="a"&gt; &lt;label for="radio-v1"&gt;Option A&lt;/label&gt;&lt;/div&gt;
+        &lt;div&gt;&lt;input type="radio" name="radio-v" id="radio-v2" value="b"&gt; &lt;label for="radio-v2"&gt;Option B&lt;/label&gt;&lt;/div&gt;
+        &lt;div&gt;&lt;input type="radio" name="radio-v" id="radio-v3" value="c"&gt; &lt;label for="radio-v3"&gt;Option C&lt;/label&gt;&lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+<div class="lb-form-row">
+    <label class="lb-form-label"><?php echo $L['BASIC.LBL_CHOOSE_ONE']; ?></label>
+    <div class="lb-form-field">
+        <div><input type="radio" name="radio-v" id="radio-v1" value="a"> <label for="radio-v1">Option A</label></div>
+        <div><input type="radio" name="radio-v" id="radio-v2" value="b"> <label for="radio-v2">Option B</label></div>
+        <div><input type="radio" name="radio-v" id="radio-v3" value="c"> <label for="radio-v3">Option C</label></div>
+    </div>
+</div>
+
+
+<!-- ============================================================ RADIO BUTTONS (HORIZONTAL) — lb-btn-group -->
+<h3><?php echo $L['BASIC.H_BTNGROUP']; ?></h3>
+<p><?php echo $L['BASIC.DESC_BTNGROUP']; ?></p>
+<pre style="background:#f4f4f4;padding:0.8em 1em;border-radius:4px;overflow-x:auto;font-size:0.85em;margin-bottom:0.8em;"><code>&lt;div class="lb-form-row"&gt;
+    &lt;label class="lb-form-label"&gt;Option wählen:&lt;/label&gt;
+    &lt;div class="lb-form-field"&gt;
+        &lt;div class="lb-btn-group"&gt;
+            &lt;input type="radio" name="radio-h" id="radio-h1" value="1"&gt;
+            &lt;label for="radio-h1"&gt;Ja&lt;/label&gt;
+            &lt;input type="radio" name="radio-h" id="radio-h2" value="0"&gt;
+            &lt;label for="radio-h2"&gt;Nein&lt;/label&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+<div class="lb-form-row">
+    <label class="lb-form-label"><?php echo $L['BASIC.LBL_CHOOSE_ONE']; ?></label>
+    <div class="lb-form-field">
+        <div class="lb-btn-group">
+            <input type="radio" name="radio-h" id="radio-h1" value="1">
+            <label for="radio-h1"><?php echo $L['BASIC.OPT_YES']; ?></label>
+            <input type="radio" name="radio-h" id="radio-h2" value="0">
+            <label for="radio-h2"><?php echo $L['BASIC.OPT_NO']; ?></label>
+        </div>
+    </div>
+</div>
+
+
+<!-- ============================================================ TOGGLE -->
+<h3><?php echo $L['BASIC.H_TOGGLE']; ?></h3>
+<p><?php echo $L['BASIC.DESC_TOGGLE']; ?></p>
+<pre style="background:#f4f4f4;padding:0.8em 1em;border-radius:4px;overflow-x:auto;font-size:0.85em;margin-bottom:0.8em;"><code>&lt;div class="lb-form-row"&gt;
+    &lt;label class="lb-form-label"&gt;Aktiv:&lt;/label&gt;
+    &lt;div class="lb-form-field"&gt;
+        &lt;label class="lb-toggle"&gt;
+            &lt;input type="checkbox" id="toggle1" name="toggle1"&gt;
+            &lt;span class="lb-toggle-slider"&gt;&lt;/span&gt;
+        &lt;/label&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+<div class="lb-form-row">
+    <label class="lb-form-label"><?php echo $L['BASIC.LBL_ACTIVE']; ?></label>
+    <div class="lb-form-field">
+        <label class="lb-toggle">
+            <input type="checkbox" id="toggle1" name="toggle1">
+            <span class="lb-toggle-slider"></span>
+        </label>
+    </div>
+</div>
+
+
+<!-- ============================================================ SELECTMENU -->
+<h3><?php echo $L['BASIC.H_SELECTMENU']; ?></h3>
+<p><?php echo $L['BASIC.DESC_SELECTMENU_DS']; ?></p>
+<pre style="background:#f4f4f4;padding:0.8em 1em;border-radius:4px;overflow-x:auto;font-size:0.85em;margin-bottom:0.8em;"><code>&lt;div class="lb-form-row"&gt;
+    &lt;label class="lb-form-label" for="select1"&gt;Modus:&lt;/label&gt;
+    &lt;div class="lb-form-field"&gt;
+        &lt;select class="lb-select" name="select1" id="select1"&gt;
+            &lt;option value="0"&gt;Aus&lt;/option&gt;
+            &lt;option value="1"&gt;Ein&lt;/option&gt;
+            &lt;option value="2"&gt;Auto&lt;/option&gt;
+        &lt;/select&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+<div class="lb-form-row">
+    <label class="lb-form-label" for="select1"><?php echo $L['BASIC.LBL_MODE']; ?></label>
+    <div class="lb-form-field">
+        <select class="lb-select" name="select1" id="select1">
+            <option value="0"><?php echo $L['BASIC.OPT_OFF']; ?></option>
+            <option value="1"><?php echo $L['BASIC.OPT_ON']; ?></option>
+            <option value="2"><?php echo $L['BASIC.OPT_AUTO']; ?></option>
+        </select>
+    </div>
+</div>
+
+
+<!-- ============================================================ SLIDER (NATIVE) -->
+<h3><?php echo $L['BASIC.H_SLIDER_NATIVE']; ?></h3>
+<p><?php echo $L['BASIC.DESC_SLIDER_NATIVE']; ?></p>
+<pre style="background:#f4f4f4;padding:0.8em 1em;border-radius:4px;overflow-x:auto;font-size:0.85em;margin-bottom:0.8em;"><code>&lt;div class="lb-form-row"&gt;
+    &lt;label class="lb-form-label" for="slider1"&gt;Level:&lt;/label&gt;
+    &lt;div class="lb-form-field"&gt;
+        &lt;div class="lb-slider-wrap"&gt;
+            &lt;input type="range" class="lb-slider" name="slider1" id="slider1"
+                   min="0" max="100" value="50"&gt;
+            &lt;span class="lb-slider-value" id="slider1-val"&gt;50&lt;/span&gt;
+        &lt;/div&gt;
+        &lt;div class="lb-slider-labels"&gt;&lt;span&gt;0&lt;/span&gt;&lt;span&gt;100&lt;/span&gt;&lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+<div class="lb-form-row">
+    <label class="lb-form-label" for="slider1"><?php echo $L['BASIC.LBL_LEVEL']; ?></label>
+    <div class="lb-form-field">
+        <div class="lb-slider-wrap">
+            <input type="range" class="lb-slider" name="slider1" id="slider1"
+                   min="0" max="100" value="50">
+            <span class="lb-slider-value" id="slider1-val">50</span>
+        </div>
+        <div class="lb-slider-labels"><span>0</span><span>100</span></div>
+    </div>
+</div>
+
+
+<!-- ============================================================ TEXTAREA -->
+<h3><?php echo $L['BASIC.H_TEXTAREA']; ?></h3>
+<p><?php echo $L['BASIC.DESC_TEXTAREA']; ?></p>
+<pre style="background:#f4f4f4;padding:0.8em 1em;border-radius:4px;overflow-x:auto;font-size:0.85em;margin-bottom:0.8em;"><code>&lt;div class="lb-form-row"&gt;
+    &lt;label class="lb-form-label" for="textarea1"&gt;Notizen:&lt;/label&gt;
+    &lt;div class="lb-form-field"&gt;
+        &lt;textarea class="lb-textarea" name="textarea1" id="textarea1" rows="4"&gt;&lt;/textarea&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+<div class="lb-form-row">
+    <label class="lb-form-label" for="textarea1"><?php echo $L['BASIC.LBL_TEXTAREA']; ?></label>
+    <div class="lb-form-field">
+        <textarea class="lb-textarea" name="textarea1" id="textarea1" rows="4" placeholder="<?php echo $L['BASIC.PH_TEXTAREA']; ?>"></textarea>
+    </div>
+</div>
+
+</form>
+
+
+<!-- ============================================================
+     UI DEMO WIDGETS (not saved to config)
+     The following widgets demonstrate additional LoxBerry DS UI elements.
+     ============================================================ -->
+
+
+<!-- ============================================================ BUTTON VARIANTS -->
+<h3><?php echo $L['BASIC.H_BUTTON']; ?></h3>
+<p><?php echo $L['BASIC.DESC_BUTTON_DS']; ?></p>
+<p><a href="https://wiki.loxberry.de/entwickler/web_ui_development_in_loxberry/loxberry_design_system" target="_blank">LoxBerry DS Docs</a></p>
+<pre style="background:#f4f4f4;padding:0.8em 1em;border-radius:4px;overflow-x:auto;font-size:0.85em;margin-bottom:0.8em;"><code>&lt;button class="lb-btn"&gt;Standard&lt;/button&gt;
+&lt;button class="lb-btn lb-btn-primary"&gt;Primary&lt;/button&gt;
+&lt;button class="lb-btn lb-btn-sm"&gt;Klein&lt;/button&gt;
+&lt;button class="lb-btn lb-btn-danger"&gt;Danger&lt;/button&gt;</code></pre>
+<div style="display:flex; flex-wrap:wrap; gap:0.5em; align-items:center; margin-bottom:0.5em;">
+    <button class="lb-btn"><?php echo $L['BASIC.DEMO_ACTION']; ?></button>
+    <button class="lb-btn lb-btn-primary"><?php echo $L['BASIC.BTN_SAVE']; ?></button>
+    <button class="lb-btn lb-btn-sm"><?php echo $L['BASIC.DEMO_ACTION']; ?></button>
+    <button class="lb-btn lb-btn-danger"><?php echo $L['BASIC.BTN_CLOSE']; ?></button>
+</div>
+
+
+<!-- ============================================================ GROUPING / COLLAPSIBLE -->
+<h3><?php echo $L['BASIC.H_COLLAPSIBLE']; ?></h3>
+<p><?php echo $L['BASIC.DESC_COLLAPSIBLE_DS']; ?></p>
+<p><a href="https://wiki.loxberry.de/entwickler/web_ui_development_in_loxberry/loxberry_design_system" target="_blank">LoxBerry DS Docs</a></p>
+<pre style="background:#f4f4f4;padding:0.8em 1em;border-radius:4px;overflow-x:auto;font-size:0.85em;margin-bottom:0.8em;"><code>&lt;details class="lb-collapsible" open&gt;
+    &lt;summary&gt;Abschnitt A&lt;/summary&gt;
+    &lt;div class="lb-collapsible-content"&gt;
+        Inhalt von Abschnitt A.
+    &lt;/div&gt;
+&lt;/details&gt;
+&lt;details class="lb-collapsible"&gt;
+    &lt;summary&gt;Abschnitt B&lt;/summary&gt;
+    &lt;div class="lb-collapsible-content"&gt;
+        Inhalt von Abschnitt B.
+    &lt;/div&gt;
+&lt;/details&gt;</code></pre>
+<details class="lb-collapsible" open>
+    <summary><?php echo $L['BASIC.DEMO_SECTION_A']; ?></summary>
+    <div class="lb-collapsible-content">
+        <p><?php echo $L['BASIC.DEMO_SECTION_A_TEXT_DS']; ?></p>
+    </div>
+</details>
+<details class="lb-collapsible">
+    <summary><?php echo $L['BASIC.DEMO_SECTION_B']; ?></summary>
+    <div class="lb-collapsible-content">
+        <p><?php echo $L['BASIC.DEMO_SECTION_B_TEXT']; ?></p>
+    </div>
+</details>
+<details class="lb-collapsible">
+    <summary><?php echo $L['BASIC.DEMO_SECTION_C']; ?></summary>
+    <div class="lb-collapsible-content">
+        <p><?php echo $L['BASIC.DEMO_SECTION_C_TEXT']; ?></p>
+    </div>
+</details>
+
+
+<!-- ============================================================ CARD -->
+<h3><?php echo $L['BASIC.H_CARD']; ?></h3>
+<p><?php echo $L['BASIC.DESC_CARD']; ?></p>
+<pre style="background:#f4f4f4;padding:0.8em 1em;border-radius:4px;overflow-x:auto;font-size:0.85em;margin-bottom:0.8em;"><code>&lt;div class="lb-card"&gt;
+    &lt;h4&gt;Titel&lt;/h4&gt;
+    &lt;p&gt;Inhalt der Card.&lt;/p&gt;
+&lt;/div&gt;</code></pre>
+<div class="lb-card">
+    <h4><?php echo $L['BASIC.DEMO_SECTION_A']; ?></h4>
+    <p><?php echo $L['BASIC.DEMO_SECTION_A_TEXT_DS']; ?></p>
+</div>
+
+
+<!-- ============================================================ TABLE -->
+<h3><?php echo $L['BASIC.H_TABLE']; ?></h3>
+<p><?php echo $L['BASIC.DESC_TABLE']; ?></p>
+<pre style="background:#f4f4f4;padding:0.8em 1em;border-radius:4px;overflow-x:auto;font-size:0.85em;margin-bottom:0.8em;"><code>&lt;table class="lb-table"&gt;
+    &lt;thead&gt;
+        &lt;tr&gt;&lt;th&gt;Key&lt;/th&gt;&lt;th&gt;Wert&lt;/th&gt;&lt;/tr&gt;
+    &lt;/thead&gt;
+    &lt;tbody&gt;
+        &lt;tr&gt;&lt;td&gt;text1&lt;/td&gt;&lt;td&gt;Hello LoxBerry&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr&gt;&lt;td&gt;slider1&lt;/td&gt;&lt;td&gt;65&lt;/td&gt;&lt;/tr&gt;
+    &lt;/tbody&gt;
+&lt;/table&gt;</code></pre>
+<table class="lb-table">
+    <thead>
+        <tr><th>Key</th><th>Wert</th></tr>
+    </thead>
+    <tbody>
+        <tr><td>text1</td><td>Hello LoxBerry</td></tr>
+        <tr><td>slider1</td><td>65</td></tr>
+        <tr><td>select1</td><td>2 (Auto)</td></tr>
+    </tbody>
+</table>
+
+
+<!-- ============================================================ MODAL -->
+<h3><?php echo $L['BASIC.H_MODAL']; ?></h3>
+<p><?php echo $L['BASIC.DESC_MODAL']; ?></p>
+<pre style="background:#f4f4f4;padding:0.8em 1em;border-radius:4px;overflow-x:auto;font-size:0.85em;margin-bottom:0.8em;"><code>&lt;button class="lb-btn"
+        onclick="document.getElementById('demo-modal').showModal()"&gt;
+    Modal öffnen
+&lt;/button&gt;
+
+&lt;dialog class="lb-modal" id="demo-modal"&gt;
+    &lt;h3&gt;Modal-Titel&lt;/h3&gt;
+    &lt;p&gt;Inhalt des Modals.&lt;/p&gt;
+    &lt;div style="display:flex;gap:8px;justify-content:flex-end"&gt;
+        &lt;button class="lb-btn lb-btn-sm"
+                onclick="document.getElementById('demo-modal').close()"&gt;Schließen&lt;/button&gt;
+    &lt;/div&gt;
+&lt;/dialog&gt;</code></pre>
+<button class="lb-btn" onclick="document.getElementById('demo-modal').showModal()"><?php echo $L['BASIC.BTN_OPEN_MODAL']; ?></button>
+
+<dialog class="lb-modal" id="demo-modal">
+    <h3><?php echo $L['BASIC.MODAL_TITLE']; ?></h3>
+    <p><?php echo $L['BASIC.MODAL_TEXT']; ?></p>
+    <div style="display:flex;gap:8px;justify-content:flex-end">
+        <button class="lb-btn lb-btn-sm"
+                onclick="document.getElementById('demo-modal').close()"><?php echo $L['BASIC.BTN_CLOSE']; ?></button>
+    </div>
+</dialog>
+
+
+<!-- ============================================================
+     JAVASCRIPT
+     ============================================================ -->
+<script>
+
+// Config file path — set by index.php via $ajaxcfgfile.
+// Used by both loadConfig() and saveConfig().
+var cfgFile = "<?php echo $ajaxcfgfile; ?>";
+
+// Translatable strings for JavaScript status messages.
+var i18n = {
+    saved:     "<?php echo $L['BASIC.JS_SAVED']; ?>",
+    loadError: "<?php echo $L['BASIC.JS_LOAD_ERROR']; ?>",
+    saveError: "<?php echo $L['BASIC.JS_SAVE_ERROR']; ?>"
+};
+
+
+// ----------------------------------------------------------------
+// updateSlider(id, valId) — syncs the green filled-track gradient
+// (via CSS custom property --lb-slider-fill) and the value badge.
+// ----------------------------------------------------------------
+function updateSlider(id, valId) {
+    var slider = document.getElementById(id);
+    if (!slider) return;
+    var pct = (slider.value - slider.min) / (slider.max - slider.min) * 100;
+    slider.style.setProperty('--lb-slider-fill', pct + '%');
+    if (valId) {
+        var el = document.getElementById(valId);
+        if (el) el.textContent = slider.value;
+    }
+}
+
+// ----------------------------------------------------------------
+// initSlider(id, valId) — registers the live 'input' event listener.
+// ----------------------------------------------------------------
+function initSlider(id, valId) {
+    var slider = document.getElementById(id);
+    if (!slider) return;
+    slider.addEventListener('input', function() { updateSlider(id, valId); });
+    updateSlider(id, valId);
+}
+
+
+// ----------------------------------------------------------------
+// loadConfig() — reads saved config from ajax-generic.php and
+// fills all form fields with the stored values.
+// ----------------------------------------------------------------
+function loadConfig() {
+    $.ajax({
+        url:      "/admin/system/ajax/ajax-generic.php?read&file=" + encodeURIComponent(cfgFile),
+        type:     "GET",
+        dataType: "json",
+
+        success: function(data) {
+            var cfg = data.MAIN || {};
+
+            $("#text1").val(cfg.text1 || "");
+            $("#checkbox1").prop("checked", cfg.checkbox1 === "1");
+            $("input[name='radio-v'][value='" + (cfg["radio-v"] || "b") + "']").prop("checked", true);
+            $("input[name='radio-h'][value='" + (cfg["radio-h"] !== undefined ? cfg["radio-h"] : "1") + "']").prop("checked", true);
+            $("#toggle1").prop("checked", cfg.toggle1 === "1");
+            $("#select1").val(cfg.select1 || "0");
+            $("#slider1").val(cfg.slider1 || "50");
+            updateSlider('slider1', 'slider1-val');
+            $("#textarea1").val(cfg.textarea1 || "");
+        },
+
+        error: function(xhr, status, error) {
+            showStatus(i18n.loadError + ": " + error, true);
+        }
+    });
+}
+
+
+// ----------------------------------------------------------------
+// saveConfig() — collects all form field values and writes them
+// via POST to ajax-generic.php into pluginconfig.json.
+// ----------------------------------------------------------------
+function saveConfig() {
+    var data = {
+        MAIN: {
+            "text1":     $("#text1").val(),
+            "checkbox1": $("#checkbox1").is(":checked") ? "1" : "0",
+            "radio-v":   $("input[name='radio-v']:checked").val() || "",
+            "radio-h":   $("input[name='radio-h']:checked").val() || "",
+            "toggle1":   $("#toggle1").is(":checked") ? "1" : "0",
+            "select1":   $("#select1").val(),
+            "slider1":   $("#slider1").val(),
+            "textarea1": $("#textarea1").val()
+        }
+    };
+
+    $.ajax({
+        url:         "/admin/system/ajax/ajax-generic.php?write&file=" + encodeURIComponent(cfgFile),
+        type:        "POST",
+        contentType: "application/json",
+        data:        JSON.stringify(data),
+
+        success: function(response) {
+            showStatus(i18n.saved, false);
+        },
+        error: function(xhr, status, error) {
+            showStatus(i18n.saveError + " " + xhr.status + ": " + error, true);
+        }
+    });
+}
+
+
+// ----------------------------------------------------------------
+// showStatus() — brief success or error message, fades after 2s.
+// ----------------------------------------------------------------
+function showStatus(message, isError) {
+    var $s = $("#save-status");
+    $s.html(message)
+      .css({
+          "background-color": isError ? "#f8d7da" : "#d4edda",
+          "color":            isError ? "#721c24" : "#155724",
+          "border":           isError ? "1px solid #f5c6cb" : "1px solid #c3e6cb"
+      })
+      .show();
+    setTimeout(function() { $s.fadeOut(500); }, 2000);
+}
+
+
+// ----------------------------------------------------------------
+// Load config on page ready.
+// jQuery is available in nojqm mode (lbheader loads jquery).
+// ----------------------------------------------------------------
+$(function() {
+    initSlider('slider1', 'slider1-val');
+    loadConfig();
+});
+
+</script>
+
 </div>
